@@ -1,17 +1,17 @@
 package graph;
 
-public class Edge<T> {
-	private Node<T> a, b;
-	private String weight;
-
-	public Node<T>[] getNodes() {
-		Node<T>[] nodes = (Node<T>[]) new Object[2];
-		nodes[0] = a;
-		nodes[1] = b;
-		return nodes;
-	}
-	
-	public String getWeight() {
-		return weight;
-	}
+public class Edge<T,E> {
+	private Node<T,E> a, b;
+    private E weight;
+ 
+    public Node<T,E>[] getNodes() {
+        Node<T,E>[] nodes = (Node<T,E>[]) new Object[2];
+        nodes[0] = a;
+        nodes[1] = b;
+        return nodes;
+    }
+   
+    public E getWeight() {
+        return weight;
+    }
 }
