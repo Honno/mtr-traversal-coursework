@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WorkingController implements Controller {
@@ -57,7 +56,7 @@ public class WorkingController implements Controller {
 				}
 			}
 			graph = new Graph<String, String>(nodesMap);
-			LOG.info(graph.toString());
+			//LOG.info(graph.toString());
 		} else {
 			throw new IOException();
 		}
@@ -88,8 +87,15 @@ public class WorkingController implements Controller {
 
 	@Override
 	public String listAllTermini() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer sb = new StringBuffer();
+		Iterator<Node<String,String>> itr = (Iterator<Node<String,String>>) graph.getNodes().iterator();
+		while(itr.hasNext()) {
+			sb.append((String) itr.next().getContent());
+			if(itr.hasNext()) {
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
 
 	@Override

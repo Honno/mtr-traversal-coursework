@@ -1,6 +1,5 @@
 package graph;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,6 +28,14 @@ public class Graph<T, E> {
 
 	public int size() {
 		return nodesMap.size();
+	}
+	
+	public Map<T, Node<T, E>> getNodesMap() {
+		return nodesMap;
+	}
+	
+	public Set<Node<T, E>> getNodes() {
+		return new HashSet<Node<T,E>>(nodesMap.values());
 	}
 
 	@SuppressWarnings("unchecked")

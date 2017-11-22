@@ -3,7 +3,6 @@
  */
 package mtr;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -18,10 +17,10 @@ public class TUI {
 	private Controller controller;
 	private Scanner stdIn;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
 			new TUI(new WorkingController("resources/MTRsystem_partial.csv"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
