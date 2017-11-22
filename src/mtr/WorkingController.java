@@ -52,11 +52,12 @@ public class WorkingController implements Controller {
 						prevNode.addEdge(edge);
 						node.addEdge(edge);
 					}
+					nodesMap.put(terminal, node);
 					prevNode = node;
 				}
 			}
 			graph = new Graph<String, String>(nodesMap);
-			LOG.log(Level.INFO, graph.toString());
+			LOG.info(graph.toString());
 		} else {
 			throw new IOException();
 		}
