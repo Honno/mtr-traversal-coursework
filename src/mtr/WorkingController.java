@@ -7,9 +7,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class WorkingController implements Controller {
@@ -99,15 +101,25 @@ public class WorkingController implements Controller {
 	}
 
 	@Override
-	public String listStationsInLine(String line) {
-		// TODO Auto-generated method stub
-		return null;
+	public String listStationsInLine(String line) throws NullPointerException {
+		try {
+			String[] terminals = map.get(line);
+			return String.join(", ", terminals);
+		} catch (NullPointerException e) {
+			//
+		}
+		return "Terminal line does not exist";
 	}
 
 	@Override
-	public String listAllDirectlyConnectedLines(String line) {
-		// TODO Auto-generated method stub
-		return null;
+	public String listAllDirectlyConnectedLines(String station) {
+		Node<String,String> node = graph.getNode(station);
+		Iterator<Edge<String,String>> itr = (Iterator<Edge<String,String>>) node.getEdges().iterator();
+		Set<String> lines = new HashSet<String>();
+		while(itr.hasNext()) {
+			lines.add((String) itr.next().getWeight());
+		}
+		return String.join("\n", lines);
 	}
 
 	@Override

@@ -37,6 +37,10 @@ public class Graph<T, E> {
 	public Set<Node<T, E>> getNodes() {
 		return new HashSet<Node<T,E>>(nodesMap.values());
 	}
+	
+	public Node<T, E> getNode(T content) {
+		return nodesMap.get(content);
+	}
 
 	@SuppressWarnings("unchecked")
 	public String toString() throws ClassCastException {

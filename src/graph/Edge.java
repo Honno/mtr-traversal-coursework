@@ -31,4 +31,19 @@ public class Edge<T, E> {
 		}
 		return null;
 	}
+	
+	public String toString(Node<T,E> node) throws ClassCastException {
+		try {
+			if(a == node) {
+				return (String) b.getContent();
+			} else if(b == node) {
+				return (String) a.getContent();
+			} else {
+				return "Node given not in Edge";
+			}
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
