@@ -22,4 +22,13 @@ public class Graph<T,E> {
     public Graph(Map<T, Node<T, E>> nodesMap) {
         this.nodesMap = nodesMap;
     }
+    
+    public String toString() {
+    	StringBuffer sb = new StringBuffer();
+    	for(Node<T, E> node: nodesMap.values()) {
+    		sb.append(node.toString());
+    		sb.append("");
+    	}
+    	return sb.toString();
+    }
 }
