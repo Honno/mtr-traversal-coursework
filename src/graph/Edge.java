@@ -1,5 +1,7 @@
 package graph;
 
+import java.util.NoSuchElementException;
+
 public class Edge<T, E> {
 	private Node<T, E> a, b;
 	private E weight;
@@ -9,15 +11,24 @@ public class Edge<T, E> {
 		this.b = b;
 		this.weight = weight;
 	}
+	
+	public Node<T,E> getNode(Node<T,E> node) throws NoSuchElementException {
+		if(a == node) {
+			return b;
+		} else if(b == node) {
+			return a;
+		} else {
+			throw new NoSuchElementException();
+		}
+	}
 
+	@SuppressWarnings("unchecked")
 	public Node<T, E>[] getNodes() {
-		@SuppressWarnings("unchecked")
 		Node<T, E>[] nodes = (Node<T, E>[]) new Object[2];
 		nodes[0] = a;
 		nodes[1] = b;
 		return nodes;
 	}
-
 	public E getWeight() {
 		return weight;
 	}

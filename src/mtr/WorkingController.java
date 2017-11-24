@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -124,8 +125,26 @@ public class WorkingController implements Controller {
 
 	@Override
 	public String showPathBetween(String stationA, String stationB) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer sb = new StringBuffer();
+		
+		try {
+			Node<String,String> start = graph.getNode(stationA);
+			Edge<String,String>[] path = graph.bfs(start, graph.getNode(stationB));
+			Iterator<Edge<String,String>> itr = Arrays.asList(path).iterator();
+			Node<String,String> prevNode = start;
+			while(itr.hasNext()) {
+				Node<String,String>  node = itr.next().getNode(prevNode);
+				sb.append(node.getContent());
+				prevNode = node;
+				if(itr.hasNext()) {
+					sb.append(" -> ");
+				}
+			}
+		} catch(NoSuchElementException e) {
+			sb = new StringBuffer("Path does not exist");
+		}
+		
+		return sb.toString();
 	}
 
 }

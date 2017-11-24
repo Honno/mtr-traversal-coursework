@@ -1,9 +1,13 @@
 package graph;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 public class Graph<T, E> {
@@ -40,6 +44,45 @@ public class Graph<T, E> {
 	
 	public Node<T, E> getNode(T content) {
 		return nodesMap.get(content);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Edge<T,E>[] bfs(Node<T,E> start, Node<T,E> end) throws NoSuchElementException {
+		Queue<Node<T,E>> toSearch = new PriorityQueue<Node<T,E>>();
+		Queue<Node<T,E>> searched = new PriorityQueue<Node<T,E>>();
+		
+		Map<Node<T,E>, Edge<T,E>[]> pathToNodes = new HashMap<Node<T,E>, Edge<T,E>[]>();
+		
+		Edge<T,E>[] startPath = (Edge<T, E>[]) new Object[0]; // Doesnt work, try arraylists?
+		
+		pathToNodes.put(start, startPath);
+		toSearch.add(start);
+		
+		while(!toSearch.isEmpty()) {
+			Node<T,E> parent = toSearch.remove();
+			if(parent.equals(end)) {
+				// construct path
+			}
+			for(Edge<T,E> edge : parent.getEdges()) {
+				Node<T,E> connectedNode = edge.getNode(parent);
+				if(searched.contains(connectedNode)) {
+					continue;
+				}
+				if(!toSearch.contains(connectedNode)) {
+					Edge<T,E>[] pathToConnectedNode = pathToNodes.get(parent).clone();
+					pathToNodes.put(connectedNode, pathToConnectedNode);
+					toSearch.add(connectedNode);
+				}
+			}
+			searched.add(parent);
+		}
+		
+		Edge<T,E>[] path = pathToNodes.get(end);
+		if(path != null) {
+			return path;
+		} else {
+			throw new NoSuchElementException();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
