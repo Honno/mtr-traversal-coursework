@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Node<T, E> {
+public class Node<T, E> implements Comparable {
 	private T content;
 	private Set<Edge<T, E>> edges;
 
@@ -74,5 +74,11 @@ public class Node<T, E> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

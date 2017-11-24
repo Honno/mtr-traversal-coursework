@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -129,8 +130,8 @@ public class WorkingController implements Controller {
 		
 		try {
 			Node<String,String> start = graph.getNode(stationA);
-			Edge<String,String>[] path = graph.bfs(start, graph.getNode(stationB));
-			Iterator<Edge<String,String>> itr = Arrays.asList(path).iterator();
+			List<Edge<String,String>> path = graph.bfs(start, graph.getNode(stationB));
+			Iterator<Edge<String,String>> itr = path.iterator();
 			Node<String,String> prevNode = start;
 			while(itr.hasNext()) {
 				Node<String,String>  node = itr.next().getNode(prevNode);
