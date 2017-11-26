@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 
 public class WorkingController implements Controller {
 
-	private final static Logger Log = Logger.getLogger(WorkingController.class
-			.getName());
 
 	private HashMap<String, String[]> map;
 	private Graph<String, String> graph;
@@ -60,15 +58,12 @@ public class WorkingController implements Controller {
 				}
 			}
 			graph = new Graph<String, String>(nodesMap);
-			//Log.info(graph.toString());
 		} else {
 			throw new IOException();
 		}
 	}
 
 	public HashMap<String, String[]> generateMap(String path) {
-		// HashMap to represent MTR, with the MTR line's name as key and the
-		// respective terminis as the value
 		HashMap<String, String[]> map = new HashMap<String, String[]>();
 		String line = "";
 

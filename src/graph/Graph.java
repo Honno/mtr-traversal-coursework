@@ -11,13 +11,12 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 
 import mtr.WorkingController;
 
 public class Graph<T, E> {
-	private final static Logger Log = Logger.getLogger(WorkingController.class
-			.getName());
 	
 	private Map<T, Node<T, E>> nodesMap; // Key is the content of the node, for
 											// efficient traversal
@@ -55,19 +54,15 @@ public class Graph<T, E> {
 	}
 	
 	public List<Edge<T,E>> bfs(Node<T,E> start, Node<T,E> end) throws NoSuchElementException {
-		Queue<Node<T,E>> toSearch = new PriorityQueue<Node<T,E>>();
-		Queue<Node<T,E>> searched = new PriorityQueue<Node<T,E>>();
+		Queue<Node<T,E>> toSearch = new ConcurrentLinkedQueue<Node<T,E>>();
+		Queue<Node<T,E>> searched = new ConcurrentLinkedQueue<Node<T,E>>();
 		
 		Map<Node<T,E>, List<Edge<T,E>>> pathToNodes = new HashMap<Node<T,E>, List<Edge<T,E>>>();
 		
 		pathToNodes.put(start, new ArrayList<Edge<T,E>>());
 		toSearch.add(start);
 		
-		//int c = 1;
-		//Log.info("-~= Begin search =~-");
 		while(!toSearch.isEmpty()) {
-			//Log.info("::" + c + "::");
-			//Log.info(toSearch.toString());
 			
 			Node<T,E> parent = toSearch.remove();
 			if(!parent.equals(end)) {
@@ -87,14 +82,11 @@ public class Graph<T, E> {
 			} else {
 				toSearch.clear();
 			}
-			//c++;
 		}
-		//Log.info("-~= End search =~-");
 		
 		List<Edge<T,E>> path =  pathToNodes.get(end);
 		
 		if(path != null) {
-			//Log.info(path.toString());
 			return path;
 		} else {
 			throw new NoSuchElementException();
