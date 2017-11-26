@@ -63,37 +63,38 @@ public class Graph<T, E> {
 		pathToNodes.put(start, new ArrayList<Edge<T,E>>());
 		toSearch.add(start);
 		
-		int c = 1;
+		//int c = 1;
 		//Log.info("-~= Begin search =~-");
 		while(!toSearch.isEmpty()) {
 			//Log.info("::" + c + "::");
 			//Log.info(toSearch.toString());
 			
 			Node<T,E> parent = toSearch.remove();
-			if(parent.equals(end)) {
-				// construct path
-			}
-			for(Edge<T,E> edge : parent.getEdges()) {
-				Node<T,E> connectedNode = edge.getNode(parent);
-				if(searched.contains(connectedNode)) {
-					continue;
+			if(!parent.equals(end)) {
+				for(Edge<T,E> edge : parent.getEdges()) {
+					Node<T,E> connectedNode = edge.getNode(parent);
+					if(searched.contains(connectedNode)) {
+						continue;
+					}
+					if(!toSearch.contains(connectedNode)) {
+						List<Edge<T,E>> pathToConnectedNode = new ArrayList<Edge<T,E>>(pathToNodes.get(parent));
+						pathToConnectedNode.add(edge);
+						pathToNodes.put(connectedNode, pathToConnectedNode);
+						toSearch.add(connectedNode);
+					}
 				}
-				if(!toSearch.contains(connectedNode)) {
-					List<Edge<T,E>> pathToConnectedNode = new ArrayList<Edge<T,E>>(pathToNodes.get(parent));
-					pathToConnectedNode.add(edge);
-					pathToNodes.put(connectedNode, pathToConnectedNode);
-					toSearch.add(connectedNode);
-				}
+				searched.add(parent);
+			} else {
+				toSearch.clear();
 			}
-			searched.add(parent);
-			c++;
+			//c++;
 		}
 		//Log.info("-~= End search =~-");
 		
 		List<Edge<T,E>> path =  pathToNodes.get(end);
 		
 		if(path != null) {
-			Log.info(path.toString());
+			//Log.info(path.toString());
 			return path;
 		} else {
 			throw new NoSuchElementException();
