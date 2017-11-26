@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class WorkingController implements Controller {
 
-	private final static Logger LOG = Logger.getLogger(WorkingController.class
+	private final static Logger Log = Logger.getLogger(WorkingController.class
 			.getName());
 
 	private HashMap<String, String[]> map;
@@ -60,7 +60,7 @@ public class WorkingController implements Controller {
 				}
 			}
 			graph = new Graph<String, String>(nodesMap);
-			//LOG.info(graph.toString());
+			//Log.info(graph.toString());
 		} else {
 			throw new IOException();
 		}
@@ -133,6 +133,7 @@ public class WorkingController implements Controller {
 			List<Edge<String,String>> path = graph.bfs(start, graph.getNode(stationB));
 			Iterator<Edge<String,String>> itr = path.iterator();
 			Node<String,String> prevNode = start;
+			sb.append(start.toString() + " -> ");
 			while(itr.hasNext()) {
 				Node<String,String>  node = itr.next().getNode(prevNode);
 				sb.append(node.getContent());

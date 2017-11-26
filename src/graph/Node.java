@@ -53,8 +53,16 @@ public class Node<T, E> implements Comparable {
 			return true;
 		}
 	}
-
+	
 	public String toString() throws ClassCastException {
+		try {
+			return (String) getContent();
+		} catch (ClassCastException e) {
+			throw new ClassCastException();
+		}
+	}
+
+	public String toStringEdges() throws ClassCastException {
 		try {
 			StringBuffer sb = new StringBuffer();
 			String contentString = (String) content;
