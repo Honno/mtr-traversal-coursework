@@ -14,12 +14,15 @@ import java.util.Scanner;
  */
 public class TUI {
 
+	private static String path = "resources/MTRsystem_partial.csv";
+
 	private Controller controller;
 	private Scanner stdIn;
 
 	public static void main(String[] args) throws Exception {
 		try {
-			new TUI(new WorkingController("resources/MTRsystem_partial.csv"));
+			Controller controllerInstance = new WorkingController(path);
+			new TUI(controllerInstance);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -2,34 +2,40 @@ package graph;
 
 import java.util.NoSuchElementException;
 
-public class Edge<T, E> {
-	private Node<T, E> a, b;
-	private E weight;
+public class Edge<C, W> {
+	private Node<C, W> a, b;
+	private W weight;
 
-	public Edge(Node<T, E> a, Node<T, E> b, E weight) {
+	public Edge(Node<C, W> a, Node<C, W> b, W weight) {
 		this.a = a;
 		this.b = b;
 		this.weight = weight;
 	}
-	
-	public Node<T,E> getNode(Node<T,E> node) throws NoSuchElementException {
-		if(a == node) {
-			return b;
-		} else if(b == node) {
-			return a;
-		} else {
-			throw new NoSuchElementException();
+
+	public Node<C, W> getNode(Node<C, W> node) throws NoSuchElementException {
+		try {
+			if (a == node) {
+				return b;
+			} else if (b == node) {
+				return a;
+			} else {
+				throw new NoSuchElementException("node does not exist in edge");
+			}
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Node<T, E>[] getNodes() {
-		Node<T, E>[] nodes = (Node<T, E>[]) new Object[2];
+	public Node<C, W>[] getNodes() {
+		Node<C, W>[] nodes = (Node<C, W>[]) new Object[2];
 		nodes[0] = a;
 		nodes[1] = b;
 		return nodes;
 	}
-	public E getWeight() {
+
+	public W getWeight() {
 		return weight;
 	}
 
@@ -39,22 +45,26 @@ public class Edge<T, E> {
 					+ " (" + (String) weight + ")";
 		} catch (ClassCastException e) {
 			e.printStackTrace();
+			return e.getMessage();
 		}
-		return null;
 	}
-	
-	public String toString(Node<T,E> node) throws ClassCastException {
+
+	public String toString(Node<C, W> node) throws ClassCastException,
+			NoSuchElementException {
 		try {
-			if(a == node) {
+			if (a == node) {
 				return (String) b.getContent();
-			} else if(b == node) {
+			} else if (b == node) {
 				return (String) a.getContent();
 			} else {
-				return "Node given not in Edge";
+				throw new NoSuchElementException("node does not exist in edge");
 			}
-		} catch (ClassCastException e) {
-			e.printStackTrace();
+		} catch (ClassCastException cce) {
+			cce.printStackTrace();
+			return cce.getMessage();
+		} catch (NoSuchElementException nsee) {
+			nsee.printStackTrace();
+			return nsee.getMessage();
 		}
-		return null;
 	}
 }

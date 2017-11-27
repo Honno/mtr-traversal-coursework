@@ -1,51 +1,50 @@
 package graph;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-public class Node<T, E> {
-	private T content;
-	private Set<Edge<T, E>> edges;
+public class Node<C, W> {
+	private C content;
+	private Set<Edge<C, W>> edges;
 
 	public Node() {
 		content = null;
-		edges = new HashSet<Edge<T, E>>();
+		edges = new HashSet<Edge<C, W>>();
 	}
 
-	public Node(T content) {
+	public Node(C content) {
 		this.content = content;
-		edges = new HashSet<Edge<T, E>>();
+		edges = new HashSet<Edge<C, W>>();
 	}
 
-	public Node(T content, Edge<T, E> edge) {
+	public Node(C content, Edge<C, W> edge) {
 		this.content = content;
-		edges = new HashSet<Edge<T, E>>();
+		edges = new HashSet<Edge<C, W>>();
 		edges.add(edge);
 	}
 
-	public Node(T content, Set<Edge<T, E>> edges) {
+	public Node(C content, Set<Edge<C, W>> edges) {
 		this.content = content;
 		this.edges = edges;
 	}
 
-	public void setContent(T content) {
+	public void setContent(C content) {
 		this.content = content;
 	}
 
-	public void setEdges(Set<Edge<T, E>> edges) {
+	public void setEdges(Set<Edge<C, W>> edges) {
 		this.edges = edges;
 	}
 
-	public T getContent() {
+	public C getContent() {
 		return content;
 	}
 
-	public Set<Edge<T, E>> getEdges() {
+	public Set<Edge<C, W>> getEdges() {
 		return edges;
 	}
 
-	public boolean addEdge(Edge<T, E> edge) {
+	public boolean addEdge(Edge<C, W> edge) {
 		if (edges.contains(edge)) {
 			return false;
 		} else {
@@ -53,34 +52,12 @@ public class Node<T, E> {
 			return true;
 		}
 	}
-	
+
 	public String toString() throws ClassCastException {
 		try {
 			return (String) getContent();
 		} catch (ClassCastException e) {
 			throw new ClassCastException();
 		}
-	}
-
-	public String toStringEdges() throws ClassCastException {
-		try {
-			StringBuffer sb = new StringBuffer();
-			String contentString = (String) content;
-			sb.append(contentString);
-			if (edges.size() != 0) {
-				sb.append(": ");
-				Iterator<Edge<T, E>> itr = edges.iterator();
-				while (itr.hasNext()) {
-					sb.append(itr.next().toString());
-					if (itr.hasNext()) {
-						sb.append(", ");
-					}
-				}
-			}
-			return sb.toString();
-		} catch (ClassCastException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
