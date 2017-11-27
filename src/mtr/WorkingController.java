@@ -115,7 +115,7 @@ public class WorkingController implements Controller {
 	}
 
 	@Override
-	public String listStationsInLine(String line) throws NoSuchElementException {
+	public String listStationsInLine(String line) {
 		try {
 			String[] terminals = lineMap.get(line);
 			if (terminals != null) {
@@ -125,14 +125,12 @@ public class WorkingController implements Controller {
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
-			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
 
 	@Override
-	public String listAllDirectlyConnectedLines(String line)
-			throws NoSuchElementException {
+	public String listAllDirectlyConnectedLines(String line) {
 		try {
 			String[] terminals = lineMap.get(line);
 			if (terminals != null) {
@@ -156,7 +154,6 @@ public class WorkingController implements Controller {
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
-			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
@@ -200,7 +197,6 @@ public class WorkingController implements Controller {
 
 			}
 		} catch (NoSuchElementException e) {
-			e.printStackTrace();
 			output = e.getMessage();
 		} finally {
 			return output;
