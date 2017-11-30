@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class Edge<C, W> {
 	private Node<C, W> a, b;
-	private W weight;
+	private W weight; // the distance from one terminal to another which indicates if a connection exists
 
 	public Edge(Node<C, W> a, Node<C, W> b, W weight) {
 		this.a = a;

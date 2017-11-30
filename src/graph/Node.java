@@ -36,6 +36,7 @@ public class Node<C, W> {
 		this.edges = edges;
 	}
 
+	//returns the contents of the variable contents
 	public C getContent() {
 		return content;
 	}
