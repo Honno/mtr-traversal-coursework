@@ -54,9 +54,9 @@ public class Node<C, W> {
 		this.content = content;
 		this.edges = edges;
 	}
-
+	
 	/**
-	 * @param content the content of the node
+	 * @param content 
 	 */
 	public void setContent(C content) {
 		this.content = content;
@@ -97,7 +97,7 @@ public class Node<C, W> {
 			return true;
 		}
 	}
-
+	
 	public String toString() throws ClassCastException {
 		try {
 			return (String) getContent();

@@ -2,16 +2,35 @@ package graph;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Represents an edge in a graph data structure.
+ * 
+ * @param <C> type of object used to represent content of node
+ * @param <W> type of object used to represent weight of node's edges
+ */
 public class Edge<C, W> {
 	private Node<C, W> a, b;
 	private W weight;
 
+	
+	/**
+	 * Construct edge with two passed nodes and passed weight. 
+	 * 
+	 * @param a the first node of the edge
+	 * @param b	the second node of the edge
+	 * @param weight the weight of the edge
+	 */
 	public Edge(Node<C, W> a, Node<C, W> b, W weight) {
 		this.a = a;
 		this.b = b;
 		this.weight = weight;
 	}
 
+	/**
+	 * @param target node
+	 * @return result node
+	 * @throws NoSuchElementException in the case of node not existing
+	 */
 	public Node<C, W> getNode(Node<C, W> node) throws NoSuchElementException {
 		try {
 			if (a == node) {
@@ -27,6 +46,9 @@ public class Edge<C, W> {
 		return null;
 	}
 
+	/**
+	 * @return the two nodes connected to the edge
+	 */
 	@SuppressWarnings("unchecked")
 	public Node<C, W>[] getNodes() {
 		Node<C, W>[] nodes = (Node<C, W>[]) new Object[2];
@@ -35,6 +57,9 @@ public class Edge<C, W> {
 		return nodes;
 	}
 
+	/**
+	 * @return the weight of the edge
+	 */
 	public W getWeight() {
 		return weight;
 	}
@@ -42,15 +67,23 @@ public class Edge<C, W> {
 	public String toString() throws ClassCastException {
 		try {
 			return (String) a.getContent() + " <-> " + (String) b.getContent()
-					+ " (" + (String) weight + ")";
+			+ " (" + (String) weight + ")";
 		} catch (ClassCastException e) {
 			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
 
+	/**
+	 * Retrieves the content of the connected node using a known node.
+	 * 
+	 * @param node the known node
+	 * @return	contents of the other node
+	 * @throws ClassCastException in the case of the node not containing a non-string content 
+	 * @throws NoSuchElementException in the case of node not existing
+	 */
 	public String toString(Node<C, W> node) throws ClassCastException,
-			NoSuchElementException {
+	NoSuchElementException {
 		try {
 			if (a == node) {
 				return (String) b.getContent();
