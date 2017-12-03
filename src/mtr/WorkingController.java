@@ -27,8 +27,8 @@ public class WorkingController implements Controller {
 
 	/**
 	 * @param path
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @throws FileNotFoundException in case of file not existing
+	 * @throws IOException in case of the file reading the file with insufficient permissions
 	 */
 	public WorkingController(String path) throws FileNotFoundException,
 			IOException {
@@ -72,17 +72,18 @@ public class WorkingController implements Controller {
 	}
 
 	/**
-	 * @param path
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * 
+	 * 
+	 * @param path path of the file containing the line information
+	 * @return 
+	 * @throws FileNotFoundException in case of file not existing
+	 * @throws IOException in case of the file reading the file with insufficient permissions
 	 */
 	@SuppressWarnings("finally")
 	public HashMap<String, String[]> generateMap(String path)
 			throws FileNotFoundException, IOException {
 		HashMap<String, String[]> map = new HashMap<String, String[]>();
 		String line = "";
-
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
 			while ((line = br.readLine()) != null) {
@@ -114,6 +115,7 @@ public class WorkingController implements Controller {
 		return sb.toString();
 	}
 
+	
 	@Override
 	public String listStationsInLine(String line) {
 		try {
@@ -129,6 +131,7 @@ public class WorkingController implements Controller {
 		}
 	}
 
+	
 	@Override
 	public String listAllDirectlyConnectedLines(String line) {
 		try {
@@ -157,6 +160,8 @@ public class WorkingController implements Controller {
 			return e.getMessage();
 		}
 	}
+
+	
 
 	@SuppressWarnings("finally")
 	@Override
@@ -202,13 +207,7 @@ public class WorkingController implements Controller {
 			return output;
 		}
 	}
-	
-	/**
-	 * @param start
-	 * @param end
-	 * @return
-	 * @throws NoSuchElementException
-	 */
+
 	public List<Edge<String, String>> bfs(Node<String, String> start,
 			Node<String, String> end) throws NoSuchElementException {
 		// 

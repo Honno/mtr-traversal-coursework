@@ -56,7 +56,7 @@ public class Node<C, W> {
 	}
 	
 	/**
-	 * @param content 
+	 * @param content new content of the node
 	 */
 	public void setContent(C content) {
 		this.content = content;
@@ -77,7 +77,7 @@ public class Node<C, W> {
 	}
 
 	/**
-	 * @return TODO set of all the edges the node has
+	 * @return get of all the edges the node has
 	 */
 	public Set<Edge<C, W>> getEdges() {
 		return edges;
@@ -87,7 +87,7 @@ public class Node<C, W> {
 	 * Adds an edge to the node if the edge does not exist in it already, telling the user whether the operation was successful.
 	 * 
 	 * @param edge an edge to add to the node
-	 * @return TODO
+	 * @return if the node was added successfully or not
 	 */
 	public boolean addEdge(Edge<C, W> edge) {
 		if (edges.contains(edge)) {

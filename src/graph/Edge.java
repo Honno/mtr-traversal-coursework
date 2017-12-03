@@ -78,7 +78,7 @@ public class Edge<C, W> {
 	 * Retrieves the content of the connected node using a known node.
 	 * 
 	 * @param node the known node
-	 * @return	contents of the other node
+	 * @return contents of the other node
 	 * @throws ClassCastException in the case of the node not containing a non-string content 
 	 * @throws NoSuchElementException in the case of node not existing
 	 */
