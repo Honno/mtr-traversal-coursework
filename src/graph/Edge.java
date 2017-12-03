@@ -32,18 +32,13 @@ public class Edge<C, W> {
 	 * @throws NoSuchElementException in the case of node not existing
 	 */
 	public Node<C, W> getNode(Node<C, W> node) throws NoSuchElementException {
-		try {
-			if (a == node) {
-				return b;
-			} else if (b == node) {
-				return a;
-			} else {
-				throw new NoSuchElementException("node does not exist in edge");
-			}
-		} catch (NoSuchElementException e) {
-			e.printStackTrace();
+		if (a == node) {
+			return b;
+		} else if (b == node) {
+			return a;
+		} else {
+			throw new NoSuchElementException("node does not exist in edge");
 		}
-		return null;
 	}
 
 	/**
@@ -65,13 +60,8 @@ public class Edge<C, W> {
 	}
 
 	public String toString() throws ClassCastException {
-		try {
-			return (String) a.getContent() + " <-> " + (String) b.getContent()
-			+ " (" + (String) weight + ")";
-		} catch (ClassCastException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}
+		return (String) a.getContent() + " <-> " + (String) b.getContent()
+		+ " (" + (String) weight + ")";
 	}
 
 	/**
@@ -84,20 +74,12 @@ public class Edge<C, W> {
 	 */
 	public String toString(Node<C, W> node) throws ClassCastException,
 	NoSuchElementException {
-		try {
-			if (a == node) {
-				return (String) b.getContent();
-			} else if (b == node) {
-				return (String) a.getContent();
-			} else {
-				throw new NoSuchElementException("node does not exist in edge");
-			}
-		} catch (ClassCastException cce) {
-			cce.printStackTrace();
-			return cce.getMessage();
-		} catch (NoSuchElementException nsee) {
-			nsee.printStackTrace();
-			return nsee.getMessage();
+		if (a == node) {
+			return (String) b.getContent();
+		} else if (b == node) {
+			return (String) a.getContent();
+		} else {
+			throw new NoSuchElementException("node does not exist in edge");
 		}
 	}
 }

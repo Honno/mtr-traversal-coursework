@@ -99,10 +99,6 @@ public class Node<C, W> {
 	}
 	
 	public String toString() throws ClassCastException {
-		try {
-			return (String) getContent();
-		} catch (ClassCastException e) {
-			throw new ClassCastException();
-		}
+		return (String) getContent();
 	}
 }
