@@ -26,70 +26,33 @@ public class WorkingController implements Controller {
 	private Map<String, Node<String, String>> nodesMap;
 
 	/**
-	 * @param path
+	 * @param path the path to the csv file
 	 * @throws FileNotFoundException in case of file not existing
 	 * @throws IOException in case of the file reading the file with insufficient permissions
 	 */
 	public WorkingController(String path) throws FileNotFoundException,
 			IOException {
-		try {
-			lineMap = generateMap(path);
-			nodesMap = new HashMap<String, Node<String, String>>();
-
-			for (Entry<String, String[]> pair : lineMap.entrySet()) {
-				String line = pair.getKey();
-				String[] terminals = pair.getValue();
-
-				Iterator<String> itr = Arrays.asList(terminals).iterator();
-
-				boolean first = true;
-
-				Node<String, String> prevNode = null;
-
-				while (itr.hasNext()) {
-					String terminal = itr.next();
-					Node<String, String> node;
-					if (nodesMap.containsKey(terminal)) {
-						node = nodesMap.get(terminal);
-					} else {
-						node = new Node<String, String>(terminal);
-					}
-					if (first) {
-						first = false;
-					} else {
-						Edge<String, String> edge = new Edge<String, String>(
-								prevNode, node, line);
-						prevNode.addEdge(edge);
-						node.addEdge(edge);
-					}
-					nodesMap.put(terminal, node);
-					prevNode = node;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		generateLineMap(path);
+		generateNodesMap();
 	}
 
 	/**
-	 * 
+	 * Generates a HashMap that represents the MTR line's CSV with the terminal line and respective terminals.
 	 * 
 	 * @param path path of the file containing the line information
-	 * @return 
-	 * @throws FileNotFoundException in case of file not existing
-	 * @throws IOException in case of the file reading the file with insufficient permissions
+	 * @throws FileNotFoundException in case of file path not existing
+	 * @throws IOException in the case of reading the file with insufficient permissions
 	 */
-	@SuppressWarnings("finally")
-	public HashMap<String, String[]> generateMap(String path)
+	public void generateLineMap(String path)
 			throws FileNotFoundException, IOException {
-		HashMap<String, String[]> map = new HashMap<String, String[]>();
+		lineMap = new HashMap<String, String[]>();
 		String line = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
 			while ((line = br.readLine()) != null) {
 
 				String[] lineElements = line.split(",");
-				map.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,
+				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,
 						lineElements.length));
 			}
 
@@ -97,8 +60,44 @@ public class WorkingController implements Controller {
 			fnfe.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} finally {
-			return map;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void generateNodesMap() {
+		nodesMap = new HashMap<String, Node<String, String>>();
+
+		for (Entry<String, String[]> pair : lineMap.entrySet()) {
+			String line = pair.getKey();
+			String[] terminals = pair.getValue();
+
+			Iterator<String> itr = Arrays.asList(terminals).iterator();
+
+			boolean first = true;
+
+			Node<String, String> prevNode = null;
+
+			while (itr.hasNext()) {
+				String terminal = itr.next();
+				Node<String, String> node;
+				if (nodesMap.containsKey(terminal)) {
+					node = nodesMap.get(terminal);
+				} else {
+					node = new Node<String, String>(terminal);
+				}
+				if (first) {
+					first = false;
+				} else {
+					Edge<String, String> edge = new Edge<String, String>(
+							prevNode, node, line);
+					prevNode.addEdge(edge);
+					node.addEdge(edge);
+				}
+				nodesMap.put(terminal, node);
+				prevNode = node;
+			}
 		}
 	}
 
@@ -208,9 +207,14 @@ public class WorkingController implements Controller {
 		}
 	}
 
+	/**
+	 * @param start
+	 * @param end
+	 * @return
+	 * @throws NoSuchElementException
+	 */
 	public List<Edge<String, String>> bfs(Node<String, String> start,
 			Node<String, String> end) throws NoSuchElementException {
-		// 
 		Queue<Node<String, String>> toSearch = new ConcurrentLinkedQueue<Node<String, String>>();
 		Queue<Node<String, String>> searched = new ConcurrentLinkedQueue<Node<String, String>>();
 

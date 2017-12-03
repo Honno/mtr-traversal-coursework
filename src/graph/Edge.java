@@ -27,9 +27,11 @@ public class Edge<C, W> {
 	}
 
 	/**
-	 * @param target node
-	 * @return result node
-	 * @throws NoSuchElementException in the case of node not existing
+	 * Takes in a target node that should exist in the edge, and returns the other node in the edge.
+	 * 
+	 * @param node the target node
+	 * @return the other node in the edge
+	 * @throws NoSuchElementException in the case of node given not existing in edge
 	 */
 	public Node<C, W> getNode(Node<C, W> node) throws NoSuchElementException {
 		if (a == node) {
@@ -59,6 +61,9 @@ public class Edge<C, W> {
 		return weight;
 	}
 
+	/*
+	 * @throws ClassCastException in the case of the node not containing a non-string content
+	 */
 	public String toString() throws ClassCastException {
 		return (String) a.getContent() + " <-> " + (String) b.getContent()
 		+ " (" + (String) weight + ")";
@@ -67,10 +72,10 @@ public class Edge<C, W> {
 	/**
 	 * Retrieves the content of the connected node using a known node.
 	 * 
-	 * @param node the known node
-	 * @return contents of the other node
-	 * @throws ClassCastException in the case of the node not containing a non-string content 
-	 * @throws NoSuchElementException in the case of node not existing
+	 * @param node the target node
+	 * @return the other node's content in the edge, casted as a String
+	 * @throws ClassCastException in the case of the node not containing a non-String content 
+	 * @throws NoSuchElementException in the case of node given not existing in edge
 	 */
 	public String toString(Node<C, W> node) throws ClassCastException,
 	NoSuchElementException {
