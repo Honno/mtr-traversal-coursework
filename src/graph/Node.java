@@ -99,6 +99,9 @@ public class Node<C, W> {
 		}
 	}
 	
+	/*
+	 * @throws ClassCastException in the case of the node containing content of a non-String type
+	 */
 	public String toString() throws ClassCastException {
 		return (String) getContent();
 	}

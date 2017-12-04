@@ -62,7 +62,7 @@ public class Edge<C, W> {
 	}
 
 	/*
-	 * @throws ClassCastException in the case of the node not containing a non-string content
+	 * @throws ClassCastException in the case of the node containing content of a non-String type
 	 */
 	public String toString() throws ClassCastException {
 		return (String) a.getContent() + " <-> " + (String) b.getContent()
@@ -74,7 +74,7 @@ public class Edge<C, W> {
 	 * 
 	 * @param node the target node
 	 * @return the other node's content in the edge, casted as a String
-	 * @throws ClassCastException in the case of the node not containing a non-String content 
+	 * @throws ClassCastException in the case of the node containing content of a non-String type 
 	 * @throws NoSuchElementException in the case of node given not existing in edge
 	 */
 	public String toString(Node<C, W> node) throws ClassCastException,
