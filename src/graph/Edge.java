@@ -27,13 +27,7 @@ public class Edge<C, W> {
 	}
 
 	/**
-	 * Takes in a target node that should exist in the edge, and returns the other node in the edge.
-	 * 
-	 * TODO
-	 * above seems way too long 
-	 * 
-	 * Retrieve a node's corresponding node
-	 * Retrieve a node's connecting node
+	 * Retrieve a node's connecting node.
 	 * 
 	 * @param node the target node
 	 * @return the other node in the edge
