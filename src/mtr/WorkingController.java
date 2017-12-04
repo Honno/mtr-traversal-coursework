@@ -51,8 +51,8 @@ public class WorkingController implements Controller {
 
 			while ((line = br.readLine()) != null) {
 
-				String[] lineElements = line.split(",");
-				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,
+				String[] lineElements = line.split(",");								//split line information by commas
+				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,		//add the line name and associated terminals
 						lineElements.length));
 			}
 
@@ -64,6 +64,7 @@ public class WorkingController implements Controller {
 	}
 	
 	/**
+	 * Generates a HashMap that represents the MTR terminals and their connections
 	 * 
 	 */
 	public void generateNodesMap() {
@@ -80,47 +81,47 @@ public class WorkingController implements Controller {
 			Node<String, String> prevNode = null;
 
 			while (itr.hasNext()) {
-				String terminal = itr.next();
-				Node<String, String> node;
-				if (nodesMap.containsKey(terminal)) {
-					node = nodesMap.get(terminal);
+				String terminal = itr.next();										//retrieve the next terminal
+				Node<String, String> node;											
+				if (nodesMap.containsKey(terminal)) {								//check if terminal already exists
+					node = nodesMap.get(terminal);									//retrieve the terminal
 				} else {
-					node = new Node<String, String>(terminal);
+					node = new Node<String, String>(terminal);						//create a new terminal
 				}
-				if (first) {
-					first = false;
+				if (first) {														//check if it is the first iteration
+					first = false;													//allow connections to be made
 				} else {
-					Edge<String, String> edge = new Edge<String, String>(
+					Edge<String, String> edge = new Edge<String, String>(			//create a new terminal link
 							prevNode, node, line);
-					prevNode.addEdge(edge);
+					prevNode.addEdge(edge);											//add the terminal link to two terminals
 					node.addEdge(edge);
 				}
-				nodesMap.put(terminal, node);
-				prevNode = node;
+				nodesMap.put(terminal, node);										//add the terminal name and terminal to the map
+				prevNode = node;													//store the previously modified terminal
 			}
 		}
 	}
 
 	@Override
 	public String listAllTermini() {
-		StringBuffer sb = new StringBuffer();
-		Iterator<String> itr = nodesMap.keySet().iterator();
-		while (itr.hasNext()) {
-			sb.append(itr.next());
+		StringBuffer sb = new StringBuffer();			
+		Iterator<String> itr = nodesMap.keySet().iterator();						//iterate through the terminals
+		while (itr.hasNext()) {											
+			sb.append(itr.next());													//append the next terminal
 			if (itr.hasNext()) {
 				sb.append(", ");
 			}
 		}
-		return sb.toString();
+		return sb.toString();														//return the terminal list
 	}
 
 	
 	@Override
 	public String listStationsInLine(String line) {
 		try {
-			String[] terminals = lineMap.get(line);
+			String[] terminals = lineMap.get(line);									//retrieve the target line
 			if (terminals != null) {
-				return String.join(", ", terminals);
+				return String.join(", ", terminals);								//concatenate and return the terminals in the line
 			} else {
 				throw new NoSuchElementException("terminal line " + line
 						+ " does not exist");
@@ -134,7 +135,7 @@ public class WorkingController implements Controller {
 	@Override
 	public String listAllDirectlyConnectedLines(String line) {
 		try {
-			String[] terminals = lineMap.get(line);
+			String[] terminals = lineMap.get(line);											
 			if (terminals != null) {
 				List<Node<String, String>> nodes = new ArrayList<Node<String, String>>();
 				for (String terminal : terminals) {

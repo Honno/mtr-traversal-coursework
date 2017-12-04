@@ -15,6 +15,11 @@ public class Node<C, W> {
 
 	/**
 	 * Construct a Node object with no parameters, initialising empty content and edges as an empty set.
+	 * TODO
+	 * above seems too long 
+	 * 
+	 * Construct an empty node
+	 * 
 	 */
 	public Node() {
 		content = null;
@@ -23,6 +28,11 @@ public class Node<C, W> {
 
 	/**
 	 * Construct a Node object with given parameter as the content, and initialise edges as an empty set.
+	 * 
+	 * TODO
+	 * above seems too long 
+	 * 
+	 * Construct a node with content only
 	 * 
 	 * @param content the content of the node
 	 */
@@ -35,6 +45,11 @@ public class Node<C, W> {
 	/**
 	 * Construct a Node object with parameters as the contents and edges. The edges attribute of the node is initialised as an empty set, then the passed edge is added to it.
 	 * 
+	 * TODO
+	 * above seems too long 
+	 * 
+	 * Construct a node with a single edge
+	 * 
 	 * @param content the content of the node
 	 * @param edge an edge to add to the node
 	 */
@@ -45,7 +60,7 @@ public class Node<C, W> {
 	}
 
 	/**
-	 * Construct a Node object with parameters as the contents and edges.
+	 * Construct a Node with multiple edges
 	 * 
 	 * @param content the content of the node
 	 * @param edges multiple edges to add to the node
@@ -77,7 +92,7 @@ public class Node<C, W> {
 	}
 
 	/**
-	 * @return get of all the edges the node has
+	 * @return all the edges the node has
 	 */
 	public Set<Edge<C, W>> getEdges() {
 		return edges;
@@ -86,8 +101,13 @@ public class Node<C, W> {
 	/**
 	 * Adds an edge to the node if the edge does not exist in it already, telling the user whether the operation was successful.
 	 * 
+	 * TODO
+	 * above seems too long 
+	 *
+	 * Add a unique edge to the node
+	 * 
 	 * @param edge an edge to add to the node
-	 * @return if the node was added successfully or not
+	 * @return if the node has been added successfully added
 	 */
 	public boolean addEdge(Edge<C, W> edge) {
 		if (edges.contains(edge)) {

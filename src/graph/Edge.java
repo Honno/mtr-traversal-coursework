@@ -14,7 +14,7 @@ public class Edge<C, W> {
 
 	
 	/**
-	 * Construct edge with two passed nodes and passed weight. 
+	 * Construct an edge with nodes and a weight. 
 	 * 
 	 * @param a the first node of the edge
 	 * @param b	the second node of the edge
@@ -28,6 +28,12 @@ public class Edge<C, W> {
 
 	/**
 	 * Takes in a target node that should exist in the edge, and returns the other node in the edge.
+	 * 
+	 * TODO
+	 * above seems way too long 
+	 * 
+	 * Retrieve a node's corresponding node
+	 * Retrieve a node's connecting node
 	 * 
 	 * @param node the target node
 	 * @return the other node in the edge
@@ -70,7 +76,7 @@ public class Edge<C, W> {
 	}
 
 	/**
-	 * Retrieves the content of the connected node using a known node.
+	 * Retrieves a String representation of a node's connected node
 	 * 
 	 * @param node the target node
 	 * @return the other node's content in the edge, casted as a String
