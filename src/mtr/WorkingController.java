@@ -250,7 +250,7 @@ public class WorkingController implements Controller {
 	public List<Edge<String, String>> bfs(Node<String, String> start,
 			Node<String, String> end) throws NoSuchElementException {
 		Queue<Node<String, String>> toSearch = new ConcurrentLinkedQueue<Node<String, String>>();
-		Queue<Node<String, String>> searched = new ConcurrentLinkedQueue<Node<String, String>>();
+		Set<Node<String, String>> searched = new HashSet<Node<String, String>>();
 
 		Map<Node<String, String>, List<Edge<String, String>>> pathToNodes = new HashMap<Node<String, String>, List<Edge<String, String>>>();
 
