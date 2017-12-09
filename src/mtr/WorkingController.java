@@ -29,7 +29,7 @@ public class WorkingController implements Controller {
 	/**
 	 * Convert given CSV file to create the respective line map, and use that to create a nodes map.
 	 * 
-	 * @param path the path to the csv file
+	 * @param path the path to the csv file	
 	 * @throws FileNotFoundException in case of file not existing
 	 * @throws IOException in case of the file reading the file with insufficient permissions
 	 */
@@ -37,93 +37,6 @@ public class WorkingController implements Controller {
 			IOException {
 		generateLineMap(path);
 		generateNodesMap();
-	}
-
-	/**
-	 * Generates a HashMap that represents the MTR line's CSV with the terminal line and respective terminals.
-	 * 
-	 * @param path path of the file containing the line information
-	 * @throws FileNotFoundException in case of file path not existing
-	 * @throws IOException in the case of reading the file with insufficient permissions
-	 */
-	public void generateLineMap(String path)
-			throws FileNotFoundException, IOException {
-		// initialise map that stores terminal lines and respective terminals
-		lineMap = new HashMap<String, String[]>();
-		
-		//iterate through each line in the csv
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String line = "";
-			while ((line = br.readLine()) != null) {
-				// split line elements by commas
-				String[] lineElements = line.split(",");
-				// add the line name (first element) and associated terminals (subsequent elements)
-				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,		
-						lineElements.length));
-			}
-		} catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Generates a HashMap that represents the MTR terminals and their connections
-	 * 
-	 */
-	public void generateNodesMap() {
-		// initialise map that stores all the terminal nodes, with the respective terminal's name as key
-		nodesMap = new HashMap<String, Node<String, String>>();
-
-		// iterate through every terminal line
-		for (Entry<String, String[]> pair : lineMap.entrySet()) {
-			// retrieve terminal line
-			String line = pair.getKey();
-			// retrieve terminals
-			String[] terminals = pair.getValue();
-
-			// declare and initialise a variable to indicate if the current iteration is the first
-			boolean first = true;
-
-			// store the node found in the previous iteration to be used in creating an edge
-			Node<String, String> prevNode = null;
-
-			// iterate through the terminals
-			Iterator<String> itr = Arrays.asList(terminals).iterator();
-			while (itr.hasNext()) {
-				// retrieve the next terminal
-				String terminal = itr.next();
-				
-				// find already existing node of the terminal, or create a new one
-				Node<String, String> node;
-				if (nodesMap.containsKey(terminal)) {
-					node = nodesMap.get(terminal);									
-				} else {
-					node = new Node<String, String>(terminal);						
-				}
-				
-				// check if it is the first iteration 
-				if (first) {
-					// ignore creating an edge between a (non-existent) previous node
-					// tell the subsequent iterations that the first iteration has occurred
-					first = false;
-				// create edge between current node and previous node
-				} else {
-					// create a new edge between two nodes
-					Edge<String, String> edge = new Edge<String, String>(			
-							prevNode, node, line);
-					// add the generated edge to the two terminals
-					prevNode.addEdge(edge);											
-					node.addEdge(edge);
-				}
-				// add the terminal to the nodes map with the key as the terminal's name
-				nodesMap.put(terminal, node);
-				
-				// store the previously modified terminal
-				prevNode = node;													
-			}
-		}
 	}
 
 	@Override
@@ -288,6 +201,92 @@ public class WorkingController implements Controller {
 			throw new NoSuchElementException("path between "
 					+ start.getContent() + " and " + end.getContent()
 					+ " does not exist");
+		}
+	}
+
+	/**
+	 * Generates a HashMap that represents the MTR line's CSV with the terminal line and respective terminals.
+	 * 
+	 * @param path path of the file containing the line information
+	 * @throws FileNotFoundException in case of file path not existing
+	 * @throws IOException in the case of reading the file with insufficient permissions
+	 */
+	public void generateLineMap(String path)
+			throws FileNotFoundException, IOException {
+		// initialise map that stores terminal lines and respective terminals
+		lineMap = new HashMap<String, String[]>();
+		
+		//iterate through each line in the csv
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				// split line elements by commas
+				String[] lineElements = line.split(",");
+				// add the line name (first element) and associated terminals (subsequent elements)
+				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,		
+						lineElements.length));
+			}
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Generates a HashMap that represents the MTR terminals and their connections
+	 */
+	public void generateNodesMap() {
+		// initialise map that stores all the terminal nodes, with the respective terminal's name as key
+		nodesMap = new HashMap<String, Node<String, String>>();
+
+		// iterate through every terminal line
+		for (Entry<String, String[]> pair : lineMap.entrySet()) {
+			// retrieve terminal line
+			String line = pair.getKey();
+			// retrieve terminals
+			String[] terminals = pair.getValue();
+
+			// declare and initialise a variable to indicate if the current iteration is the first
+			boolean first = true;
+
+			// store the node found in the previous iteration to be used in creating an edge
+			Node<String, String> prevNode = null;
+
+			// iterate through the terminals
+			Iterator<String> itr = Arrays.asList(terminals).iterator();
+			while (itr.hasNext()) {
+				// retrieve the next terminal
+				String terminal = itr.next();
+				
+				// find already existing node of the terminal, or create a new one
+				Node<String, String> node;
+				if (nodesMap.containsKey(terminal)) {
+					node = nodesMap.get(terminal);									
+				} else {
+					node = new Node<String, String>(terminal);						
+				}
+				
+				// check if it is the first iteration 
+				if (first) {
+					// ignore creating an edge between a (non-existent) previous node
+					// tell the subsequent iterations that the first iteration has occurred
+					first = false;
+				// create edge between current node and previous node
+				} else {
+					// create a new edge between two nodes
+					Edge<String, String> edge = new Edge<String, String>(			
+							prevNode, node, line);
+					// add the generated edge to the two terminals
+					prevNode.addEdge(edge);											
+					node.addEdge(edge);
+				}
+				// add the terminal to the nodes map with the key as the terminal's name
+				nodesMap.put(terminal, node);
+				
+				// store the previously modified terminal
+				prevNode = node;													
+			}
 		}
 	}
 
