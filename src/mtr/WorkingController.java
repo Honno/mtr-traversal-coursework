@@ -21,9 +21,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class WorkingController implements Controller {
-	// key: terminal line, value: array of terminals in respective line
+	// key: z line, value: array of stations in respective line
 	private Map<String, String[]> lineMap;
-	// key: terminal name, value: respective Node object of terminal
+	// key: station name, value: respective Node object of station
 	private Map<String, Node<String, String>> nodesMap;
 
 	/**
@@ -40,7 +40,7 @@ public class WorkingController implements Controller {
 	}
 
 	/**
-	 * Generates a HashMap that represents the MTR line's CSV with the terminal line and respective terminals.
+	 * Generates a HashMap that represents the MTR line's CSV with the station line and respective stations.
 	 * 
 	 * @param path path of the file containing the line information
 	 * @throws FileNotFoundException in case of file path not existing
@@ -48,7 +48,7 @@ public class WorkingController implements Controller {
 	 */
 	public void generateLineMap(String path)
 			throws FileNotFoundException, IOException {
-		// initialise map that stores terminal lines and respective terminals
+		// initialise map that stores station lines and respective stations
 		lineMap = new HashMap<String, String[]>();
 		
 		//iterate through each line in the csv
@@ -57,7 +57,7 @@ public class WorkingController implements Controller {
 			while ((line = br.readLine()) != null) {
 				// split line elements by commas
 				String[] lineElements = line.split(",");
-				// add the line name (first element) and associated terminals (subsequent elements)
+				// add the line name (first element) and associated stations (subsequent elements)
 				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,		
 						lineElements.length));
 			}
@@ -69,18 +69,18 @@ public class WorkingController implements Controller {
 	}
 	
 	/**
-	 * Generates a HashMap that represents the MTR terminals and their connections
+	 * Generates a HashMap that represents the MTR stations and their connections
 	 */
 	public void generateNodesMap() {
-		// initialise map that stores all the terminal nodes, with the respective terminal's name as key
+		// initialise map that stores all the station nodes, with the respective station's name as key
 		nodesMap = new HashMap<String, Node<String, String>>();
 
-		// iterate through every terminal line
+		// iterate through every station line
 		for (Entry<String, String[]> pair : lineMap.entrySet()) {
-			// retrieve terminal line
+			// retrieve station line
 			String line = pair.getKey();
-			// retrieve terminals
-			String[] terminals = pair.getValue();
+			// retrieve stations
+			String[] stations = pair.getValue();
 
 			// declare and initialise a variable to indicate if the current iteration is the first
 			boolean first = true;
@@ -88,18 +88,18 @@ public class WorkingController implements Controller {
 			// store the node found in the previous iteration to be used in creating an edge
 			Node<String, String> prevNode = null;
 
-			// iterate through the terminals
-			Iterator<String> itr = Arrays.asList(terminals).iterator();
+			// iterate through the stations
+			Iterator<String> itr = Arrays.asList(stations).iterator();
 			while (itr.hasNext()) {
-				// retrieve the next terminal
-				String terminal = itr.next();
+				// retrieve the next station
+				String station = itr.next();
 				
-				// find already existing node of the terminal, or create a new one
+				// find already existing node of the station, or create a new one
 				Node<String, String> node;
-				if (nodesMap.containsKey(terminal)) {
-					node = nodesMap.get(terminal);									
+				if (nodesMap.containsKey(station)) {
+					node = nodesMap.get(station);									
 				} else {
-					node = new Node<String, String>(terminal);						
+					node = new Node<String, String>(station);						
 				}
 				
 				// check if it is the first iteration 
@@ -112,14 +112,14 @@ public class WorkingController implements Controller {
 					// create a new edge between two nodes
 					Edge<String, String> edge = new Edge<String, String>(			
 							prevNode, node, line);
-					// add the generated edge to the two terminals
+					// add the generated edge to the two stations
 					prevNode.addEdge(edge);											
 					node.addEdge(edge);
 				}
-				// add the terminal to the nodes map with the key as the terminal's name
-				nodesMap.put(terminal, node);
+				// add the station to the nodes map with the key as the station's name
+				nodesMap.put(station, node);
 				
-				// store the previously modified terminal
+				// store the previously modified station
 				prevNode = node;													
 			}
 		}
@@ -129,13 +129,13 @@ public class WorkingController implements Controller {
 	public String listAllTermini() {
 		StringBuffer sb = new StringBuffer();
 		
-		// iterate through the terminals
+		// iterate through the stations
 		Iterator<String> itr = nodesMap.keySet().iterator();						
 		while (itr.hasNext()) {											
-			//append the next terminal to the string buffer
+			//append the next station to the string buffer
 			sb.append(itr.next());
 			
-			// if there is another terminal to add in the next iteration, add a comma separator
+			// if there is another station to add in the next iteration, add a comma separator
 			if (itr.hasNext()) {
 				sb.append(", ");
 			}
@@ -147,15 +147,15 @@ public class WorkingController implements Controller {
 	@Override
 	public String listStationsInLine(String line) {
 		try {
-			// retrieve the the terminals of the passed in terminal line
-			String[] terminals = lineMap.get(line);
+			// retrieve the the stations of the passed in station line
+			String[] stations = lineMap.get(line);
 			
-			// check if terminal line exists for error handling
-			if (terminals != null) {
-				// if the terminal line exists, concatenate and return the terminals in the line
-				return String.join(", ", terminals);								
+			// check if station line exists for error handling
+			if (stations != null) {
+				// if the station line exists, concatenate and return the stations in the line
+				return String.join(", ", stations);								
 			} else {
-				throw new NoSuchElementException("terminal line " + line
+				throw new NoSuchElementException("station line " + line
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
@@ -167,11 +167,11 @@ public class WorkingController implements Controller {
 	@Override
 	public String listAllDirectlyConnectedLines(String line) {
 		try {
-			String[] terminals = lineMap.get(line);											
-			if (terminals != null) {
+			String[] stations = lineMap.get(line);											
+			if (stations != null) {
 				List<Node<String, String>> nodes = new ArrayList<Node<String, String>>();
-				for (String terminal : terminals) {
-					nodes.add(nodesMap.get(terminal));
+				for (String station : stations) {
+					nodes.add(nodesMap.get(station));
 				}
 				Set<String> lines = new HashSet<String>();
 				for (Node<String, String> node : nodes) {
@@ -185,7 +185,7 @@ public class WorkingController implements Controller {
 
 				return String.join(", ", lines);
 			} else {
-				throw new NoSuchElementException("terminal line " + line
+				throw new NoSuchElementException("station line " + line
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
@@ -197,23 +197,23 @@ public class WorkingController implements Controller {
 
 	@SuppressWarnings("finally")
 	@Override
-	public String showPathBetween(String terminalA, String terminalB) {
+	public String showPathBetween(String stationA, String stationB) {
 		String output = new String();
 		try {
 			StringBuffer sb = new StringBuffer();
-			Node<String, String> start = nodesMap.get(terminalA);
-			Node<String, String> end = nodesMap.get(terminalB);
+			Node<String, String> start = nodesMap.get(stationA);
+			Node<String, String> end = nodesMap.get(stationB);
 			boolean startIsNull = start == null;
 			boolean endIsNull = end == null;
 			if (startIsNull || endIsNull) {
 				if (startIsNull && endIsNull) {
 					throw new NoSuchElementException(
-							"terminals provided do not exist");
+							"stations provided do not exist");
 				} else if (startIsNull) {
-					throw new NoSuchElementException("terminal " + terminalA
+					throw new NoSuchElementException("station " + stationA
 							+ " does not exist");
 				} else if (endIsNull) {
-					throw new NoSuchElementException("terminal " + terminalB
+					throw new NoSuchElementException("station " + stationB
 							+ " does not exist");
 				}
 			} else {
