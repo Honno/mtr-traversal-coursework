@@ -20,14 +20,17 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * An implementation of the Controller interface that meets the coursework requirements.
+ */
 public class WorkingController implements Controller {
-	// key: z line, value: array of stations in respective line
+	// line name: array of stations in respective line
 	private Map<String, String[]> lineMap;
-	// key: station name, value: respective Node object of station
+	// station name: Node object of respective station
 	private Map<String, Node<String, String>> nodesMap;
 
 	/**
-	 * Convert given CSV file to create the respective line map, and use that to create a nodes map.
+	 * Convert given CSV file to create the respective line map, and use the line map to create a nodes map.
 	 * 
 	 * @param path the path to the csv file
 	 * @throws FileNotFoundException in case of file not existing
@@ -55,8 +58,8 @@ public class WorkingController implements Controller {
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				// split line elements by commas
 				String[] lineElements = line.split(",");
+				
 				// add the line name (first element) and associated stations (subsequent elements)
 				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1,		
 						lineElements.length));
@@ -94,7 +97,7 @@ public class WorkingController implements Controller {
 				// retrieve the next station
 				String station = itr.next();
 				
-				// find already existing node of the station, or create a new one
+				// retrieve already existing node of the station, or create a new one
 				Node<String, String> node;
 				if (nodesMap.containsKey(station)) {
 					node = nodesMap.get(station);									
@@ -104,8 +107,7 @@ public class WorkingController implements Controller {
 				
 				// check if it is the first iteration 
 				if (first) {
-					// ignore creating an edge between a (non-existent) previous node
-					// tell the subsequent iterations that the first iteration has occurred
+					// ignore creating an edge between a (non-existent) previous node and tell the subsequent iterations that the first iteration has occurred
 					first = false;
 				// create edge between current node and previous node
 				} else {
@@ -156,15 +158,13 @@ public class WorkingController implements Controller {
 	@Override
 	public String listStationsInLine(String line) {
 		try {
-			// retrieve the the stations of the passed in station line
 			String[] stations = lineMap.get(line);
 			
-			// check if station line exists for error handling
+			// if the station line exists, concatenate and return the stations in the line
 			if (stations != null) {
-				// if the station line exists, concatenate and return the stations in the line
-				return String.join(", ", stations);								
+				return String.join(", ", stations);
 			} else {
-				throw new NoSuchElementException("station line " + line
+				throw new NoSuchElementException("Station line " + line
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
@@ -194,7 +194,7 @@ public class WorkingController implements Controller {
 
 				return String.join(", ", lines);
 			} else {
-				throw new NoSuchElementException("station line " + line
+				throw new NoSuchElementException("Station line " + line
 						+ " does not exist");
 			}
 		} catch (NoSuchElementException e) {
@@ -217,12 +217,12 @@ public class WorkingController implements Controller {
 			if (startIsNull || endIsNull) {
 				if (startIsNull && endIsNull) {
 					throw new NoSuchElementException(
-							"stations provided do not exist");
+							"Both " + stationA + " and " + stationB + " stations do not exist");
 				} else if (startIsNull) {
-					throw new NoSuchElementException("station " + stationA
+					throw new NoSuchElementException("Station " + stationA
 							+ " does not exist");
 				} else if (endIsNull) {
-					throw new NoSuchElementException("station " + stationB
+					throw new NoSuchElementException("Station " + stationB
 							+ " does not exist");
 				}
 			} else {
@@ -293,7 +293,7 @@ public class WorkingController implements Controller {
 		if (path != null) {
 			return path;
 		} else {
-			throw new NoSuchElementException("path between "
+			throw new NoSuchElementException("Path between "
 					+ start.getContent() + " and " + end.getContent()
 					+ " does not exist");
 		}
