@@ -129,18 +129,27 @@ public class WorkingController implements Controller {
 	public String listAllTermini() {
 		StringBuffer sb = new StringBuffer();
 		
-		// iterate through the stations
-		Iterator<String> itr = nodesMap.keySet().iterator();						
-		while (itr.hasNext()) {											
-			//append the next station to the string buffer
-			sb.append(itr.next());
+		// iterate through every station line
+		Iterator<Entry<String, String[]>> itr = lineMap.entrySet().iterator();
+		while(itr.hasNext()) {
+			Entry<String, String[]>  entry = itr.next();
 			
-			// if there is another station to add in the next iteration, add a comma separator
-			if (itr.hasNext()) {
-				sb.append(", ");
+			// add line to buffer
+			sb.append(entry.getKey());
+			sb.append(": ");
+			
+			// add line's respective stations to buffer
+			String[] stations = entry.getValue();
+			sb.append(stations[0]);
+			sb.append(" <-> ");
+			sb.append(stations[stations.length - 1]);
+			
+			if(itr.hasNext()) {
+				sb.append("\n");
 			}
 		}
-		return sb.toString();														
+		
+		return sb.toString();
 	}
 
 	
