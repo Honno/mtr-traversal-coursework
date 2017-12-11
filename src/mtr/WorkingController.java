@@ -256,21 +256,32 @@ public class WorkingController implements Controller {
 				// find a path between start and end stations
 				List<Edge<String, String>> path = bfs(start, end);
 
-				
-				Iterator<Edge<String, String>> itr = path.iterator();
+				// store previous node of iteration, initialise with start node
 				Node<String, String> prevNode = start;
+				// start output with starting node
 				sb.append(start.toString() + " -> ");
+				
+				// iterate through edges in path
+				Iterator<Edge<String, String>> itr = path.iterator();
 				while (itr.hasNext()) {
+					// store next edge of the path
 					Edge<String, String> edge = itr.next();
+					// retrieve the other node of the edge by passing the known previous node
 					Node<String, String> node = edge.getNode(prevNode);
-					sb.append(node.getContent() + " (" + edge.getWeight() + ")");
-					prevNode = node;
+					
+					// append connecting node and terminal line to output
+					sb.append(node.getContent() + " (via the " + edge.getWeight() + ")");
+					
+					// if there are more edges to add, append a separator string to output
 					if (itr.hasNext()) {
 						sb.append(" -> ");
 					}
+					
+					// store current node as previous node
+					prevNode = node;
 				}
+				
 				output = sb.toString();
-
 			}
 		} catch (NoSuchElementException e) {
 			output = e.getMessage();
