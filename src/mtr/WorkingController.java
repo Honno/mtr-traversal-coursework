@@ -148,7 +148,7 @@ public class WorkingController implements Controller {
 
 	@Override
 	public String listAllTermini() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		// iterate through every station line
 		Iterator<Entry<String, String[]>> itr = lineMap.entrySet().iterator();
@@ -234,8 +234,8 @@ public class WorkingController implements Controller {
 	@SuppressWarnings("finally")
 	@Override
 	public String showPathBetween(String stationA, String stationB) {
-		String output = new String();
-		StringBuffer sb = new StringBuffer();
+		String output;
+		StringBuilder sb = new StringBuilder();
 
 		try {
 			// retrieves the nodes respective to the users inputed station names
