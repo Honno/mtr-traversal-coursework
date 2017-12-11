@@ -42,8 +42,7 @@ public class WorkingController implements Controller {
 	 *             in case of the file reading the file with insufficient
 	 *             permissions
 	 */
-	public WorkingController(String path) throws FileNotFoundException,
-			IOException {
+	public WorkingController(String path) throws FileNotFoundException, IOException {
 		generateLineMap(path);
 		generateNodesMap();
 	}
@@ -59,8 +58,7 @@ public class WorkingController implements Controller {
 	 * @throws IOException
 	 *             in the case of reading the file with insufficient permissions
 	 */
-	public void generateLineMap(String path) throws FileNotFoundException,
-			IOException {
+	public void generateLineMap(String path) throws FileNotFoundException, IOException {
 		// initialise map that stores station lines and respective stations
 		lineMap = new HashMap<String, String[]>();
 
@@ -72,8 +70,7 @@ public class WorkingController implements Controller {
 
 				// add the line name (first element) and associated stations
 				// (subsequent elements)
-				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements,
-						1, lineElements.length));
+				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1, lineElements.length));
 			}
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
@@ -130,8 +127,7 @@ public class WorkingController implements Controller {
 					// create edge between current node and previous node
 				} else {
 					// create a new edge between two nodes
-					Edge<String, String> edge = new Edge<String, String>(
-							prevNode, node, line);
+					Edge<String, String> edge = new Edge<String, String>(prevNode, node, line);
 					// add the generated edge to the two stations
 					prevNode.addEdge(edge);
 					node.addEdge(edge);
@@ -183,8 +179,7 @@ public class WorkingController implements Controller {
 			if (stations != null) {
 				return String.join(", ", stations);
 			} else {
-				throw new NoSuchElementException("Station line " + line
-						+ " does not exist");
+				throw new NoSuchElementException("Station line " + line + " does not exist");
 			}
 		} catch (NoSuchElementException e) {
 			return e.getMessage();
@@ -225,8 +220,7 @@ public class WorkingController implements Controller {
 				// concatenate and return the connected lines
 				return String.join(", ", lines);
 			} else {
-				throw new NoSuchElementException("Station line " + line
-						+ " does not exist");
+				throw new NoSuchElementException("Station line " + line + " does not exist");
 			}
 		} catch (NoSuchElementException e) {
 			return e.getMessage();
@@ -237,25 +231,32 @@ public class WorkingController implements Controller {
 	@Override
 	public String showPathBetween(String stationA, String stationB) {
 		String output = new String();
+		StringBuffer sb = new StringBuffer();
+
 		try {
-			StringBuffer sb = new StringBuffer();
+			// retrieves the nodes respective to the users inputed station names
 			Node<String, String> start = nodesMap.get(stationA);
 			Node<String, String> end = nodesMap.get(stationB);
+
+			// checks if given stations exist
 			boolean startIsNull = start == null;
 			boolean endIsNull = end == null;
+			// if either of the given stations don't exist throw a suitable
+			// exception
 			if (startIsNull || endIsNull) {
 				if (startIsNull && endIsNull) {
-					throw new NoSuchElementException("Both " + stationA
-							+ " and " + stationB + " stations do not exist");
+					throw new NoSuchElementException(
+							"Both " + stationA + " and " + stationB + " stations do not exist");
 				} else if (startIsNull) {
-					throw new NoSuchElementException("Station " + stationA
-							+ " does not exist");
+					throw new NoSuchElementException("Station " + stationA + " does not exist");
 				} else if (endIsNull) {
-					throw new NoSuchElementException("Station " + stationB
-							+ " does not exist");
+					throw new NoSuchElementException("Station " + stationB + " does not exist");
 				}
 			} else {
+				// find a path between start and end stations
 				List<Edge<String, String>> path = bfs(start, end);
+
+				
 				Iterator<Edge<String, String>> itr = path.iterator();
 				Node<String, String> prevNode = start;
 				sb.append(start.toString() + " -> ");
@@ -279,52 +280,83 @@ public class WorkingController implements Controller {
 	}
 
 	/**
+	 * Finds a path between start and end nodes.
+	 * 
 	 * @param start
+	 *            the starting node
 	 * @param end
-	 * @return
+	 *            the ending node
+	 * @return a path between start and end nodes
 	 * @throws NoSuchElementException
+	 *             when there is no path between start and end nodes
 	 */
-	public List<Edge<String, String>> bfs(Node<String, String> start,
-			Node<String, String> end) throws NoSuchElementException {
+	public List<Edge<String, String>> bfs(Node<String, String> start, Node<String, String> end)
+			throws NoSuchElementException {
+		// initialises a queue that stores nodes to search
 		Queue<Node<String, String>> toSearch = new ConcurrentLinkedQueue<Node<String, String>>();
+		// initialises a set that stores nodes already searched
 		Set<Node<String, String>> searched = new HashSet<Node<String, String>>();
 
+		// initialises a map that stores paths to nodes from the start node
 		Map<Node<String, String>, List<Edge<String, String>>> pathToNodes = new HashMap<Node<String, String>, List<Edge<String, String>>>();
+		// declare path from start to end nodes
+		List<Edge<String, String>> path = null;
 
+		// put the path to the start node from the start node as empty
 		pathToNodes.put(start, new ArrayList<Edge<String, String>>());
+		// adds start node as the first node to search
 		toSearch.add(start);
 
+		// keep searching for path between start and end nodes while searchable
+		// nodes exist
 		while (!toSearch.isEmpty()) {
+			// removes front node of the nodes to be searched and stores it as
+			// parent node
+			Node<String, String> parentNode = toSearch.remove();
 
-			Node<String, String> parent = toSearch.remove();
-			if (!parent.equals(end)) {
-				for (Edge<String, String> edge : parent.getEdges()) {
-					Node<String, String> connectedNode = edge.getNode(parent);
-					if (searched.contains(connectedNode)) {
+			// check if parent node isn't the end node
+			if (!parentNode.equals(end)) {
+				// iterate through all edges of parent node
+				for (Edge<String, String> edge : parentNode.getEdges()) {
+					// stores child node
+					Node<String, String> childNode = edge.getNode(parentNode);
+
+					// if child has already been searched,
+					if (searched.contains(childNode)) {
 						continue;
 					}
-					if (!toSearch.contains(connectedNode)) {
-						List<Edge<String, String>> pathToConnectedNode = new ArrayList<Edge<String, String>>(
-								pathToNodes.get(parent));
-						pathToConnectedNode.add(edge);
-						pathToNodes.put(connectedNode, pathToConnectedNode);
-						toSearch.add(connectedNode);
+
+					// check if node is not to be searched
+					if (!toSearch.contains(childNode)) {
+						// store path to parent node
+						List<Edge<String, String>> pathToChildNode = new ArrayList<Edge<String, String>>(
+								pathToNodes.get(parentNode));
+						// add path between parent and child nodes
+						pathToChildNode.add(edge);
+						// store path to child node from start node
+						pathToNodes.put(childNode, pathToChildNode);
+
+						// add child to queue of nodes to be searched
+						toSearch.add(childNode);
 					}
 				}
-				searched.add(parent);
+
+				// add parent node to set of nodes already searched
+				searched.add(parentNode);
 			} else {
+				// remove all nodes from to be searched queue
 				toSearch.clear();
+				// retrieve path to end node
+				path = pathToNodes.get(end);
 			}
 		}
 
-		List<Edge<String, String>> path = pathToNodes.get(end);
-
+		// check if path exists
 		if (path != null) {
 			return path;
 		} else {
-			throw new NoSuchElementException("Path between "
-					+ start.getContent() + " and " + end.getContent()
-					+ " does not exist");
+			throw new NoSuchElementException(
+					"Path between " + start.getContent() + " and " + end.getContent() + " does not exist");
 		}
 	}
 
