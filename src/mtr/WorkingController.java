@@ -269,8 +269,8 @@ public class WorkingController implements Controller {
 					// retrieve the other node of the edge by passing the known previous node
 					Node<String, String> node = edge.getNode(prevNode);
 					
-					// append connecting node and terminal line to output
-					sb.append(node.getContent() + " (via the " + edge.getWeight() + ")");
+					// append connecting node to output
+					sb.append(node.getContent());
 					
 					// if there are more edges to add, append a separator string to output
 					if (itr.hasNext()) {
@@ -320,7 +320,7 @@ public class WorkingController implements Controller {
 
 		// keep searching for path between start and end nodes while searchable
 		// nodes exist
-		while (!toSearch.isEmpty()) {
+		while (!toSearch.isEmpty()) { // n
 			// removes front node of the nodes to be searched and stores it as
 			// parent node
 			Node<String, String> parentNode = toSearch.remove();
@@ -328,7 +328,7 @@ public class WorkingController implements Controller {
 			// check if parent node isn't the end node
 			if (!parentNode.equals(end)) {
 				// iterate through all edges of parent node
-				for (Edge<String, String> edge : parentNode.getEdges()) {
+				for (Edge<String, String> edge : parentNode.getEdges()) { // m =/= n
 					// stores child node
 					Node<String, String> childNode = edge.getNode(parentNode);
 
