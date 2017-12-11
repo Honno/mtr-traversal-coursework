@@ -43,8 +43,8 @@ public class WorkingController implements Controller {
 	 *             permissions
 	 */
 	public WorkingController(String path) throws FileNotFoundException, IOException {
-		generateLineMap(path);
-		generateNodesMap();
+		lineMap = generateLineMap(path);
+		nodesMap = generateNodesMap(lineMap);
 	}
 
 	/**
@@ -58,9 +58,9 @@ public class WorkingController implements Controller {
 	 * @throws IOException
 	 *             in the case of reading the file with insufficient permissions
 	 */
-	public void generateLineMap(String path) throws FileNotFoundException, IOException {
+	public HashMap<String, String[]> generateLineMap(String path) throws FileNotFoundException, IOException {
 		// initialise map that stores station lines and respective stations
-		lineMap = new HashMap<String, String[]>();
+		HashMap<String, String[]> lineMap = new HashMap<String, String[]>();
 
 		// iterate through each line in the csv
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -77,16 +77,18 @@ public class WorkingController implements Controller {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		
+		return lineMap;
 	}
 
 	/**
 	 * Generates a HashMap that represents the MTR network with the stations and
 	 * all their immediate connections.
 	 */
-	public void generateNodesMap() {
+	public HashMap<String, Node<String, String>> generateNodesMap(Map<String, String[]> lineMap) {
 		// initialise map that stores all the station nodes, with the respective
 		// station's name as key
-		nodesMap = new HashMap<String, Node<String, String>>();
+		HashMap<String, Node<String, String>> nodesMap = new HashMap<String, Node<String, String>>();
 
 		// iterate through every station line
 		for (Entry<String, String[]> pair : lineMap.entrySet()) {
@@ -140,6 +142,8 @@ public class WorkingController implements Controller {
 				prevNode = node;
 			}
 		}
+		
+		return nodesMap;
 	}
 
 	@Override
