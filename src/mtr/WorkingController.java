@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * An implementation of the Controller interface that meets the coursework
@@ -42,8 +40,7 @@ public class WorkingController implements Controller {
 	 *             in case of the file reading the file with insufficient
 	 *             permissions
 	 */
-	public WorkingController(String path) throws FileNotFoundException,
-			IOException {
+	public WorkingController(String path) throws FileNotFoundException, IOException {
 		lineMap = generateLineMap(path);
 		nodesMap = generateNodesMap(lineMap);
 	}
@@ -59,8 +56,7 @@ public class WorkingController implements Controller {
 	 * @throws IOException
 	 *             in the case of reading the file with insufficient permissions
 	 */
-	public HashMap<String, String[]> generateLineMap(String path)
-			throws FileNotFoundException, IOException {
+	public HashMap<String, String[]> generateLineMap(String path) throws FileNotFoundException, IOException {
 		// initialise map that stores station lines and respective stations
 		HashMap<String, String[]> lineMap = new HashMap<String, String[]>();
 
@@ -72,8 +68,7 @@ public class WorkingController implements Controller {
 
 				// add the line name (first element) and associated stations
 				// (subsequent elements)
-				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements,
-						1, lineElements.length));
+				lineMap.put(lineElements[0], Arrays.copyOfRange(lineElements, 1, lineElements.length));
 			}
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
@@ -88,11 +83,11 @@ public class WorkingController implements Controller {
 	 * Generates a HashMap that represents the MTR network with the stations and
 	 * all their immediate connections.
 	 * 
-	 * @param lineMap the lines and their respective stations
+	 * @param lineMap
+	 *            the lines and their respective stations
 	 * @return a map of the stations and their respective Node object
 	 */
-	public HashMap<String, Node<String, String>> generateNodesMap(
-			Map<String, String[]> lineMap) {
+	public HashMap<String, Node<String, String>> generateNodesMap(Map<String, String[]> lineMap) {
 		// initialise map that stores all the station nodes, with the respective
 		// station's name as key
 		HashMap<String, Node<String, String>> nodesMap = new HashMap<String, Node<String, String>>();
@@ -136,8 +131,7 @@ public class WorkingController implements Controller {
 					// create edge between current node and previous node
 				} else {
 					// create a new edge between two nodes
-					Edge<String, String> edge = new Edge<String, String>(
-							prevNode, node, line);
+					Edge<String, String> edge = new Edge<String, String>(prevNode, node, line);
 					// add the generated edge to the two stations
 					prevNode.addEdge(edge);
 					node.addEdge(edge);
@@ -187,7 +181,7 @@ public class WorkingController implements Controller {
 			StringBuilder sb = new StringBuilder();
 			sb.append(line);
 			sb.append(": ");
-			
+
 			String[] stations = lineMap.get(line);
 
 			// if the station line exists, concatenate and return the stations
@@ -196,8 +190,7 @@ public class WorkingController implements Controller {
 				sb.append(String.join(" <-> ", stations));
 				return sb.toString();
 			} else {
-				throw new NoSuchElementException("Station line " + line
-						+ " does not exist");
+				throw new NoSuchElementException("Station line " + line + " does not exist");
 			}
 		} catch (NoSuchElementException e) {
 			return e.getMessage();
@@ -238,8 +231,7 @@ public class WorkingController implements Controller {
 				// concatenate and return the connected lines
 				return String.join(", ", lines);
 			} else {
-				throw new NoSuchElementException("Station line " + line
-						+ " does not exist");
+				throw new NoSuchElementException("Station line " + line + " does not exist");
 			}
 		} catch (NoSuchElementException e) {
 			return e.getMessage();
@@ -264,18 +256,16 @@ public class WorkingController implements Controller {
 			// exception
 			if (startIsNull || endIsNull) {
 				if (startIsNull && endIsNull) {
-					throw new NoSuchElementException("Both " + stationA
-							+ " and " + stationB + " stations do not exist");
+					throw new NoSuchElementException(
+							"Both " + stationA + " and " + stationB + " stations do not exist");
 				} else if (startIsNull) {
-					throw new NoSuchElementException("Station " + stationA
-							+ " does not exist");
+					throw new NoSuchElementException("Station " + stationA + " does not exist");
 				} else if (endIsNull) {
-					throw new NoSuchElementException("Station " + stationB
-							+ " does not exist");
+					throw new NoSuchElementException("Station " + stationB + " does not exist");
 				}
 			} else {
 				// find a path between start and end stations
-				List<Edge<String, String>> path = bfs(start, end);
+				List<Edge<String, String>> path = Node.bfs(start, end);
 
 				// store previous node of iteration, initialise with start node
 				Node<String, String> prevNode = start;
@@ -310,89 +300,6 @@ public class WorkingController implements Controller {
 			output = e.getMessage();
 		} finally {
 			return output;
-		}
-	}
-
-	/**
-	 * Finds a path between start and end nodes.
-	 * 
-	 * @param start
-	 *            the starting node
-	 * @param end
-	 *            the ending node
-	 * @return a path between start and end nodes
-	 * @throws NoSuchElementException
-	 *             when there is no path between start and end nodes
-	 */
-	public List<Edge<String, String>> bfs(Node<String, String> start,
-			Node<String, String> end) throws NoSuchElementException {
-		// initialises a queue that stores nodes to search
-		Queue<Node<String, String>> toSearch = new ConcurrentLinkedQueue<Node<String, String>>();
-		// initialises a set that stores nodes already searched
-		Set<Node<String, String>> searched = new HashSet<Node<String, String>>();
-
-		// initialises a map that stores paths to nodes from the start node
-		Map<Node<String, String>, List<Edge<String, String>>> pathToNodes = new HashMap<Node<String, String>, List<Edge<String, String>>>();
-		// declare path from start to end nodes
-		List<Edge<String, String>> path = null;
-
-		// put the path to the start node from the start node as empty
-		pathToNodes.put(start, new ArrayList<Edge<String, String>>());
-		// adds start node as the first node to search
-		toSearch.add(start);
-
-		// keep searching for path between start and end nodes while searchable
-		// nodes exist
-		while (!toSearch.isEmpty()) {
-			// removes front node of the nodes to be searched and stores it as
-			// parent node
-			Node<String, String> parentNode = toSearch.remove();
-
-			// check if parent node isn't the end node
-			if (!parentNode.equals(end)) {
-				// iterate through all edges of parent node
-				for (Edge<String, String> edge : parentNode.getEdges()) {
-					// stores child node
-					Node<String, String> childNode = edge.getNode(parentNode);
-
-					// if child has already been searched,
-					if (searched.contains(childNode)) {
-						continue;
-					}
-
-					// check if node is not to be searched
-					if (!toSearch.contains(childNode)) {
-						// store path to parent node
-						List<Edge<String, String>> pathToChildNode = new ArrayList<Edge<String, String>>(
-								pathToNodes.get(parentNode));
-						// add path between parent and child nodes
-						pathToChildNode.add(edge);
-						// store path to child node from start node
-						pathToNodes.put(childNode, pathToChildNode);
-
-						// add child to queue of nodes to be searched
-						toSearch.add(childNode);
-					}
-				}
-
-				// add parent node to set of nodes already searched
-				searched.add(parentNode);
-			} else {
-				// remove all nodes from to be searched queue
-				toSearch.clear();
-				
-				// retrieve path to end node
-				path = pathToNodes.get(end);
-			}
-		}
-
-		// check if path exists
-		if (path != null) {
-			return path;
-		} else {
-			throw new NoSuchElementException("Path between "
-					+ start.getContent() + " and " + end.getContent()
-					+ " does not exist");
 		}
 	}
 

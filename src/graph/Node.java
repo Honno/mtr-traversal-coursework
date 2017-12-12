@@ -1,7 +1,14 @@
 package graph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Represents a node in a graph data structure.
@@ -111,7 +118,87 @@ public class Node<C, W> {
 	 * @throws ClassCastException in the case of the node containing content of
 	 * a non-String type
 	 */
+	@Override
 	public String toString() throws ClassCastException {
 		return (String) getContent();
+	}
+
+	/**
+	 * Finds a path between start and end nodes.
+	 * 
+	 * @param start
+	 *            the starting node
+	 * @param end
+	 *            the ending node
+	 * @return a path between start and end nodes
+	 * @throws NoSuchElementException
+	 *             when there is no path between start and end nodes
+	 */
+	public static <C, W> List<Edge<C, W>> bfs(Node<C, W> start, Node<C, W> end) throws NoSuchElementException {
+		// initialises a queue that stores nodes to search
+		Queue<Node<C, W>> toSearch = new ConcurrentLinkedQueue<Node<C, W>>();
+		// initialises a set that stores nodes already searched
+		Set<Node<C, W>> searched = new HashSet<Node<C, W>>();
+
+		// initialises a map that stores paths to nodes from the start node
+		Map<Node<C, W>, List<Edge<C, W>>> pathToNodes = new HashMap<Node<C, W>, List<Edge<C, W>>>();
+		// declare path from start to end nodes
+		List<Edge<C, W>> path = null;
+
+		// put the path to the start node from the start node as empty
+		pathToNodes.put(start, new ArrayList<Edge<C, W>>());
+		// adds start node as the first node to search
+		toSearch.add(start);
+
+		// keep searching for path between start and end nodes while searchable
+		// nodes exist
+		while (!toSearch.isEmpty()) {
+			// removes front node of the nodes to be searched and stores it as
+			// parent node
+			Node<C, W> parentNode = toSearch.remove();
+
+			// check if parent node isn't the end node
+			if (!parentNode.equals(end)) {
+				// iterate through all edges of parent node
+				for (Edge<C, W> edge : parentNode.getEdges()) {
+					// stores child node
+					Node<C, W> childNode = edge.getNode(parentNode);
+
+					// if child has already been searched,
+					if (searched.contains(childNode)) {
+						continue;
+					}
+
+					// check if node is not to be searched
+					if (!toSearch.contains(childNode)) {
+						// store path to parent node
+						List<Edge<C, W>> pathToChildNode = new ArrayList<Edge<C, W>>(pathToNodes.get(parentNode));
+						// add path between parent and child nodes
+						pathToChildNode.add(edge);
+						// store path to child node from start node
+						pathToNodes.put(childNode, pathToChildNode);
+
+						// add child to queue of nodes to be searched
+						toSearch.add(childNode);
+					}
+				}
+
+				// add parent node to set of nodes already searched
+				searched.add(parentNode);
+			} else {
+				// remove all nodes from to be searched queue
+				toSearch.clear();
+
+				// retrieve path to end node
+				path = pathToNodes.get(end);
+			}
+		}
+
+		// check if path exists
+		if (path != null) {
+			return path;
+		} else {
+			throw new NoSuchElementException("Path between nodes do not exist");
+		}
 	}
 }
