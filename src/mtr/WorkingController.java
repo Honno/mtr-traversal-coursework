@@ -267,31 +267,37 @@ public class WorkingController implements Controller {
 				// find a path between start and end stations
 				List<Edge<String, String>> path = Node.bfs(start, end);
 
-				// store previous node of iteration, initialise with start node
-				Node<String, String> prevNode = start;
 				// start output with starting node
-				sb.append(start.toString() + " -> ");
-
-				// iterate through edges in path
-				Iterator<Edge<String, String>> itr = path.iterator();
-				while (itr.hasNext()) {
-					// store next edge of the path
-					Edge<String, String> edge = itr.next();
-					// retrieve the other node of the edge by passing the known
-					// previous node
-					Node<String, String> node = edge.getNode(prevNode);
-
-					// append connecting node to output
-					sb.append(node.getContent());
-
-					// if there are more edges to add, append a separator string
-					// to output
-					if (itr.hasNext()) {
-						sb.append(" -> ");
+				sb.append(start.toString());
+				
+				// check if path is empty (i.e. start station and end station is the same)
+				if(!path.isEmpty()) {
+					// store previous node of iteration, initialise with start node
+					Node<String, String> prevNode = start;
+					// append a separator string
+					sb.append( " -> ");
+	
+					// iterate through edges in path
+					Iterator<Edge<String, String>> itr = path.iterator();
+					while (itr.hasNext()) {
+						// store next edge of the path
+						Edge<String, String> edge = itr.next();
+						// retrieve the other node of the edge by passing the known
+						// previous node
+						Node<String, String> node = edge.getNode(prevNode);
+	
+						// append connecting node to output
+						sb.append(node.getContent());
+	
+						// if there are more edges to add, append a separator string
+						// to output
+						if (itr.hasNext()) {
+							sb.append(" -> ");
+						}
+	
+						// store current node as previous node
+						prevNode = node;
 					}
-
-					// store current node as previous node
-					prevNode = node;
 				}
 
 				output = sb.toString();
