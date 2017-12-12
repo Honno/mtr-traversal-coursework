@@ -66,8 +66,7 @@ public class TUI {
 		case "3": // Lists all connected lines
 			display("Lists all directly connected lines...");
 			display("Enter the name of the required line:");
-			display(controller.listAllDirectlyConnectedLines(stdIn.nextLine()
-					.trim()));
+			display(controller.listAllDirectlyConnectedLines(stdIn.nextLine().trim()));
 			break;
 		case "4": // Finds a path between two stations
 			display("Finds a path between two stations...");
@@ -103,10 +102,8 @@ public class TUI {
 	 */
 	private static String menu() {
 		return "Enter the number associated with your chosen menu option.\n"
-				+ "1: List all termini in the MTR network\n"
-				+ "2: List all stations in a line in the MTR network\n"
-				+ "3: List all lines that are directly connected to a line\n"
-				+ "4: Find a path between two stations\n"
+				+ "1: List all termini in the MTR network\n" + "2: List all stations in a line in the MTR network\n"
+				+ "3: List all lines that are directly connected to a line\n" + "4: Find a path between two stations\n"
 				+ "5: Exit this application\n";
 	}
 
@@ -127,8 +124,7 @@ public class TUI {
 	 * @return an error message
 	 */
 	private static String unrecogniseCommandErrorMsg(String error) {
-		return String
-				.format("Cannot recognise the given command: %s.%n", error);
+		return String.format("Cannot recognise the given command: %s.%n", error);
 	}
 
 }

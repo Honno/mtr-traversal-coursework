@@ -45,7 +45,7 @@ public class Edge<C, W> {
 		} else if (b == node) {
 			return a;
 		} else {
-			throw new NoSuchElementException("node does not exist in edge");
+			throw new NoSuchElementException("Node does not exist in edge");
 		}
 	}
 
@@ -71,9 +71,9 @@ public class Edge<C, W> {
 	 * @throws ClassCastException in the case of the node containing content of
 	 * a non-String type
 	 */
+	@Override
 	public String toString() throws ClassCastException {
-		return (String) a.getContent() + " <-> " + (String) b.getContent()
-				+ " (" + (String) weight + ")";
+		return (String) a.getContent() + " <-> " + (String) b.getContent() + " (" + (String) weight + ")";
 	}
 
 	/**
@@ -88,14 +88,13 @@ public class Edge<C, W> {
 	 * @throws NoSuchElementException
 	 *             in the case of node given not existing in edge
 	 */
-	public String toString(Node<C, W> node) throws ClassCastException,
-			NoSuchElementException {
+	public String toString(Node<C, W> node) throws ClassCastException, NoSuchElementException {
 		if (a == node) {
 			return (String) b.getContent();
 		} else if (b == node) {
 			return (String) a.getContent();
 		} else {
-			throw new NoSuchElementException("node does not exist in edge");
+			throw new NoSuchElementException("Node does not exist in edge");
 		}
 	}
 }
