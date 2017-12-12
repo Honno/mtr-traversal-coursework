@@ -56,7 +56,7 @@ public class WorkingController implements Controller {
 	 * @throws IOException
 	 *             in the case of reading the file with insufficient permissions
 	 */
-	public HashMap<String, String[]> generateLineMap(String path) throws FileNotFoundException, IOException {
+	private HashMap<String, String[]> generateLineMap(String path) throws FileNotFoundException, IOException {
 		// initialise map that stores station lines and respective stations
 		HashMap<String, String[]> lineMap = new HashMap<String, String[]>(32);
 
@@ -87,7 +87,7 @@ public class WorkingController implements Controller {
 	 *            the lines and their respective stations
 	 * @return a map of the stations and their respective Node object
 	 */
-	public HashMap<String, Node<String, String>> generateNodesMap(Map<String, String[]> lineMap) {
+	private HashMap<String, Node<String, String>> generateNodesMap(Map<String, String[]> lineMap) {
 		// initialise map that stores all the station nodes, with the respective
 		// station's name as key
 		HashMap<String, Node<String, String>> nodesMap = new HashMap<String, Node<String, String>>(64);
