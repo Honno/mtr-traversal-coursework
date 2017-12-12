@@ -58,11 +58,11 @@ public class WorkingController implements Controller {
 	 */
 	public HashMap<String, String[]> generateLineMap(String path) throws FileNotFoundException, IOException {
 		// initialise map that stores station lines and respective stations
-		HashMap<String, String[]> lineMap = new HashMap<String, String[]>();
+		HashMap<String, String[]> lineMap = new HashMap<String, String[]>(32);
 
 		// iterate through each line in the csv
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String line = "";
+			String line = new String();
 			while ((line = br.readLine()) != null) {
 				String[] lineElements = line.split(",");
 
@@ -90,7 +90,7 @@ public class WorkingController implements Controller {
 	public HashMap<String, Node<String, String>> generateNodesMap(Map<String, String[]> lineMap) {
 		// initialise map that stores all the station nodes, with the respective
 		// station's name as key
-		HashMap<String, Node<String, String>> nodesMap = new HashMap<String, Node<String, String>>();
+		HashMap<String, Node<String, String>> nodesMap = new HashMap<String, Node<String, String>>(64);
 
 		// iterate through every station line
 		for (Entry<String, String[]> pair : lineMap.entrySet()) {
@@ -211,7 +211,7 @@ public class WorkingController implements Controller {
 				}
 
 				// initialise store of all connected lines
-				Set<String> lines = new HashSet<String>();
+				Set<String> lines = new HashSet<String>(12);
 
 				// iterate through every node in the line
 				for (Node<String, String> node : nodes) {
