@@ -5,20 +5,24 @@ import java.util.NoSuchElementException;
 /**
  * Represents an edge in a graph data structure.
  * 
- * @param <C> type of object used to represent content of node
- * @param <W> type of object used to represent weight of node's edges
+ * @param <C>
+ *            type of object used to represent content of node
+ * @param <W>
+ *            type of object used to represent weight of node's edges
  */
 public class Edge<C, W> {
 	private Node<C, W> a, b;
 	private W weight;
 
-	
 	/**
-	 * Construct an edge with nodes and a weight. 
+	 * Construct an edge with nodes and a weight.
 	 * 
-	 * @param a the first node of the edge
-	 * @param b	the second node of the edge
-	 * @param weight the weight of the edge
+	 * @param a
+	 *            the first node of the edge
+	 * @param b
+	 *            the second node of the edge
+	 * @param weight
+	 *            the weight of the edge
 	 */
 	public Edge(Node<C, W> a, Node<C, W> b, W weight) {
 		this.a = a;
@@ -29,9 +33,11 @@ public class Edge<C, W> {
 	/**
 	 * Retrieve a node's connecting node.
 	 * 
-	 * @param node the target node
+	 * @param node
+	 *            the target node
 	 * @return the other node in the edge
-	 * @throws NoSuchElementException in the case of node given not existing in edge
+	 * @throws NoSuchElementException
+	 *             in the case of node given not existing in edge
 	 */
 	public Node<C, W> getNode(Node<C, W> node) throws NoSuchElementException {
 		if (a == node) {
@@ -62,23 +68,28 @@ public class Edge<C, W> {
 	}
 
 	/*
-	 * @throws ClassCastException in the case of the node containing content of a non-String type
+	 * @throws ClassCastException in the case of the node containing content of
+	 * a non-String type
 	 */
 	public String toString() throws ClassCastException {
 		return (String) a.getContent() + " <-> " + (String) b.getContent()
-		+ " (" + (String) weight + ")";
+				+ " (" + (String) weight + ")";
 	}
 
 	/**
-	 * Retrieves a String representation of a node's connected node
+	 * Retrieves a String representation of a node's connected node.
 	 * 
-	 * @param node the target node
+	 * @param node
+	 *            the target node
 	 * @return the other node's content in the edge, casted as a String
-	 * @throws ClassCastException in the case of the node containing content of a non-String type 
-	 * @throws NoSuchElementException in the case of node given not existing in edge
+	 * @throws ClassCastException
+	 *             in the case of the node containing content of a non-String
+	 *             type
+	 * @throws NoSuchElementException
+	 *             in the case of node given not existing in edge
 	 */
 	public String toString(Node<C, W> node) throws ClassCastException,
-	NoSuchElementException {
+			NoSuchElementException {
 		if (a == node) {
 			return (String) b.getContent();
 		} else if (b == node) {
