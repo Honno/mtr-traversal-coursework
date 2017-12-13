@@ -1,0 +1,11 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+
+Files: *
+Copyright: 2017, Dom Meyer <domdom2609@gmail.com>, Jarnail Singh <jarnailsinghpjb@hotmail.com> and Matthew Barber <quitesimplymatt@gmail.com>
+License: MIT License
+
+Files: src/mtr/Controller.java, src/mtr/WorkingController.java
+Copyright: 2017, Sylvia Wong <s.h.s.wong@aston.ac.uk>
+License: No license
+Comments:
+  No license provided.
