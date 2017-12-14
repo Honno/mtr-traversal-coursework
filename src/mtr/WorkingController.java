@@ -285,16 +285,14 @@ public class WorkingController implements Controller {
 						// store next edge of the path
 						Edge<String, String> edge = itr.next();
 						// retrieve the other node of the edge by passing the
-						// known
-						// previous node
+						// known previous node
 						Node<String, String> node = edge.getNode(prevNode);
 
 						// append connecting node to output
 						sb.append(node.getContent());
 
 						// if there are more edges to add, append a separator
-						// string
-						// to output
+						// string to output
 						if (itr.hasNext()) {
 							sb.append(" -> ");
 						}
