@@ -145,35 +145,28 @@ public class Node<C, W> {
 		// declare path from start to end nodes
 		List<Edge<C, W>> path = null;
 
-		// put the path to the start node from the start node as empty
+		// put the path to the start node from the start node as empty and adds start node as the first node to search
 		pathToNodes.put(start, new ArrayList<Edge<C, W>>());
-		// adds start node as the first node to search
 		toSearch.add(start);
 
 		// keep searching for path between start and end nodes while searchable
 		// nodes exist
 		while (!toSearch.isEmpty()) {
-			// removes front node of the nodes to be searched and stores it as
-			// parent node
 			Node<C, W> parentNode = toSearch.remove();
 
-			// check if parent node isn't the end node
 			if (!parentNode.equals(end)) {
-				// iterate through all edges of parent node
 				for (Edge<C, W> edge : parentNode.getEdges()) {
-					// stores child node
 					Node<C, W> childNode = edge.getNode(parentNode);
 
-					// if child has already been searched,
+					// if child has already been searched, skip finding the child's path
 					if (searched.contains(childNode)) {
 						continue;
 					}
 
-					// check if node is not to be searched
+					// check if child is not to be searched now
 					if (!toSearch.contains(childNode)) {
-						// store path to parent node
+						// store path to parent node and add path between parent and child nodes
 						List<Edge<C, W>> pathToChildNode = new ArrayList<Edge<C, W>>(pathToNodes.get(parentNode));
-						// add path between parent and child nodes
 						pathToChildNode.add(edge);
 						// store path to child node from start node
 						pathToNodes.put(childNode, pathToChildNode);
