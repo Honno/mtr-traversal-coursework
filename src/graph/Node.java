@@ -152,32 +152,32 @@ public class Node<C, W> {
 		// keep searching for path between start and end nodes while searchable
 		// nodes exist
 		while (!toSearch.isEmpty()) {
-			Node<C, W> parentNode = toSearch.remove();
+			Node<C, W> parent = toSearch.remove();
 
-			if (!parentNode.equals(end)) {
-				for (Edge<C, W> edge : parentNode.getEdges()) {
-					Node<C, W> childNode = edge.getNode(parentNode);
+			if (!parent.equals(end)) {
+				for (Edge<C, W> edge : parent.getEdges()) {
+					Node<C, W> child = edge.getNode(parent);
 
 					// if child has already been searched, skip finding the child's path
-					if (searched.contains(childNode)) {
+					if (searched.contains(child)) {
 						continue;
 					}
 
 					// check if child is not to be searched now
-					if (!toSearch.contains(childNode)) {
+					if (!toSearch.contains(child)) {
 						// store path to parent node and add path between parent and child nodes
-						List<Edge<C, W>> pathToChildNode = new ArrayList<Edge<C, W>>(pathToNodes.get(parentNode));
-						pathToChildNode.add(edge);
+						List<Edge<C, W>> pathTochild = new ArrayList<Edge<C, W>>(pathToNodes.get(parent));
+						pathTochild.add(edge);
 						// store path to child node from start node
-						pathToNodes.put(childNode, pathToChildNode);
-
+						pathToNodes.put(child, pathTochild);
+						
 						// add child to queue of nodes to be searched
-						toSearch.add(childNode);
+						toSearch.add(child);
 					}
 				}
 
 				// add parent node to set of nodes already searched
-				searched.add(parentNode);
+				searched.add(parent);
 			} else {
 				// remove all nodes from to be searched queue
 				toSearch.clear();
